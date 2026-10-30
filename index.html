@@ -1,17 +1,734 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chill & Cheer — Premium Mobile Slush Bar Experience</title>
-    <meta name="description" content="Premium mobile slush bar experience for weddings, corporate events, festivals, and private parties. Elegant, modern, and playful frozen mocktails served in style." />
-    <meta property="og:title" content="Chill & Cheer — Premium Mobile Slush Bar experience" />
-    <meta property="og:description" content="Premium mobile slush bar experience for weddings, corporate events, festivals, and private parties." />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chill &amp; Cheer — Premium Mobile Slush Bar</title>
+    <meta
+      name="description"
+      content="A premium mobile slush bar experience for weddings, corporate events, festivals and private parties. Real juice, fully branded, serving Eastern Ontario and Western Quebec."
+    />
+    <meta name="theme-color" content="#FFF9E7" />
+    <link rel="icon" href="assets/favicon.png" />
+    <meta property="og:title" content="Chill & Cheer — Premium Mobile Slush Bar" />
+    <meta
+      property="og:description"
+      content="Bring the fun. Serve the smile. A premium mobile slush bar for weddings, corporate events, festivals and private parties."
+    />
     <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=63" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <!-- ============ HEADER ============ -->
+    <header class="site-header" id="siteHeader">
+      <div class="site-header__inner">
+        <a class="brand" href="#home" aria-label="Chill and Cheer — home">
+          <img src="assets/logo.png" alt="Chill & Cheer" width="1653" height="372" />
+        </a>
+
+        <nav class="nav" id="primaryNav" aria-label="Primary">
+          <a href="#why-us">Why Us</a>
+          <a href="#services">Services</a>
+          <a href="#packages">Packages</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="site-header__actions">
+          <a class="btn btn--pink btn--sm" href="#contact">
+            Book Your Bar
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+          </a>
+          <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Open menu">
+            <span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ============ 1. HERO ============ -->
+      <section class="hero" id="home">
+        <div class="rule-row">
+          <span class="micro">Premium mobile bar</span>
+          <span class="micro micro--dot">Eastern Ontario &amp; Western Quebec</span>
+        </div>
+
+        <div class="poster" id="poster">
+          <h1 class="poster__type">
+            <span class="poster__group poster__group--left">
+              <span class="poster__line" data-parallax="0.045">Bring</span>
+              <span class="poster__line" data-parallax="0.06">the fun</span>
+            </span>
+            <span class="poster__group poster__group--right">
+              <span class="poster__line" data-parallax="0.045">Serve</span>
+              <span class="poster__line" data-parallax="0.06">the&nbsp;smile</span>
+            </span>
+          </h1>
+
+          <div class="poster__product" data-parallax="-0.05">
+            <div class="poster__halo" aria-hidden="true"></div>
+            <img
+              src="assets/bar-grass.webp?v=2"
+              alt="The Chill &amp; Cheer mobile slush bar in a grass finish, with a twin-bowl slush machine on a marble counter"
+              width="461"
+              height="663"
+              fetchpriority="high"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 2. WHY US / REAL JUICE ============ -->
+      <section class="juice" id="why-us">
+        <div class="juice__grid">
+          <div class="juice__copy">
+            <span class="eyebrow">Why Chill &amp; Cheer</span>
+            <h2 class="juice__title">
+              Not just a drink station.<br />
+              <em>A whole&nbsp;experience.</em>
+            </h2>
+            <p class="lede">
+              A premium mobile slush bar experience for weddings, corporate events, festivals, and
+              private parties — serving quality frozen drinks and mocktail favourites for all&nbsp;ages.
+            </p>
+            <div class="btn-row">
+              <a class="btn btn--pink" href="#contact">
+                Book Your Bar
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+              </a>
+              <a class="btn btn--ghost" href="#packages">View Packages</a>
+            </div>
+          </div>
+
+          <div class="juice__product" data-parallax="-0.03">
+            <img
+              src="assets/bar-grass.webp?v=2"
+              alt="Chill &amp; Cheer slush bar with a real-juice menu card"
+              width="461"
+              height="663"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="juice__type">
+            <h2 class="juice__display">
+              <span>Made with</span>
+              <span class="juice__display-em">real&nbsp;juice</span>
+            </h2>
+            <p class="juice__sub">Favourite for all&nbsp;ages.</p>
+            <ul class="juice__proof">
+              <li><span>01</span> Real fruit juice. Never a powder mix.</li>
+              <li><span>02</span> Zero-alcohol by default — spike it if you like.</li>
+              <li><span>03</span> Colour-matched to your palette or brand.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 3. OCCASIONS ============ -->
+      <section class="occasions" id="services">
+        <div class="occasions__pin">
+        <div class="occasions__frame">
+        <div class="section-head section-head--center">
+          <span class="eyebrow">What we do</span>
+          <h2 class="display display--section">A bar for every&nbsp;occasion</h2>
+          <p class="section-sub">
+            From black-tie weddings to high-energy festivals, we tailor every detail of your mobile
+            slush bar to match the tone and style of your&nbsp;event.
+          </p>
+        </div>
+
+        <!-- the four finishes stand together in the middle, clear of the copy
+             columns below them, so the group reads as one display -->
+        <div class="occasion-bars">
+          <div class="occasion__stage">
+            <img src="assets/bar-rosegold.webp?v=2" alt="Rosé gold Chill & Cheer bar for weddings" width="461" height="663" loading="lazy" />
+          </div>
+          <div class="occasion__stage">
+            <img src="assets/bar-black.webp?v=2" alt="Black sequin Chill & Cheer bar for corporate events" width="461" height="663" loading="lazy" />
+          </div>
+          <div class="occasion__stage">
+            <img src="assets/bar-silver.webp?v=2" alt="Silver mirrored Chill & Cheer bar for festivals" width="461" height="663" loading="lazy" />
+          </div>
+          <div class="occasion__stage" data-finish="grass">
+            <img src="assets/bar-grass.webp?v=2" alt="Grass Chill & Cheer bar for private parties" width="461" height="663" loading="lazy" />
+          </div>
+        </div>
+
+        <div class="occasion-grid">
+          <article class="occasion">
+            <h3 class="occasion__title">Weddings</h3>
+            <p class="occasion__text">
+              A signature slush bar that becomes a centerpiece of your reception — elegant
+              glassware, bespoke flavour pairings, and a team that blends seamlessly into
+              your&nbsp;celebration.
+            </p>
+          </article>
+
+          <article class="occasion">
+            <h3 class="occasion__title">Corporate&nbsp;Events</h3>
+            <p class="occasion__text">
+              Brand-activated slush bars for product launches, conferences, and team off-sites.
+              Custom signage, branded menus, and a polished service team in&nbsp;uniform.
+            </p>
+          </article>
+
+          <article class="occasion">
+            <h3 class="occasion__title">Festivals</h3>
+            <p class="occasion__text">
+              High-volume slush stations built for crowds. Fast-pour taps, durable setups, and
+              crowd-pleasing flavours that keep the energy flowing all day&nbsp;long.
+            </p>
+          </article>
+
+          <article class="occasion">
+            <h3 class="occasion__title">Private&nbsp;Parties</h3>
+            <p class="occasion__text">
+              Intimate gatherings deserve a touch of theatre. From garden parties to milestone
+              birthdays, we bring a curated slush experience to your&nbsp;doorstep.
+            </p>
+          </article>
+        </div>
+        </div>
+        </div>
+      </section>
+
+      <!-- ============ 4. PACKAGES ============ -->
+      <section class="packages" id="packages">
+        <div class="packages__grain" aria-hidden="true"></div>
+        <div class="section-head section-head--center section-head--light">
+          <span class="pill pill--ghost">Choose your experience</span>
+          <h2 class="display display--section">Packages</h2>
+          <p class="section-sub">
+            Transparent pricing, fully inclusive. Every package is customizable — tell us about your
+            event and we'll craft the perfect&nbsp;pour.
+          </p>
+        </div>
+
+        <div class="package-grid">
+          <article class="package" data-reveal>
+            <div class="package__top">
+              <h3 class="package__name">The&nbsp;Signature</h3>
+              <p class="package__tag">Perfect for intimate&nbsp;gatherings</p>
+            </div>
+            <p class="package__price"><span>Starting at</span> $575 <em>+ tax</em></p>
+            <ul class="package__list">
+              <li>Ideal for up to 50&nbsp;guests</li>
+              <li>Up to 3 hours of&nbsp;service</li>
+              <li>2 signature slush flavours (10L&nbsp;each)</li>
+              <li>2 standard&nbsp;toppings</li>
+              <li>Cups &amp;&nbsp;straws</li>
+              <li>2 professional&nbsp;servers</li>
+              <li>Setup and takedown&nbsp;included</li>
+            </ul>
+            <a class="btn btn--line" href="#contact">Enquire</a>
+          </article>
+
+          <article class="package package--featured" data-reveal data-delay="1">
+            <span class="package__flag">Most booked</span>
+            <div class="package__top">
+              <h3 class="package__name">The&nbsp;Royal</h3>
+              <p class="package__tag">Designed for elevated&nbsp;celebrations</p>
+            </div>
+            <p class="package__price"><span>Starting at</span> $1,195 <em>+ tax</em></p>
+            <ul class="package__list">
+              <li>Ideal for up to 100&nbsp;guests</li>
+              <li>Up to 4 hours of&nbsp;service</li>
+              <li>2 signature slush flavours (15L&nbsp;each)</li>
+              <li>Martini-style premium&nbsp;glassware</li>
+              <li>4 premium&nbsp;toppings</li>
+              <li>Custom signage &amp;&nbsp;styling</li>
+              <li>Welcome drink station&nbsp;setup</li>
+              <li>2 professional&nbsp;servers</li>
+              <li>Setup and takedown&nbsp;included</li>
+            </ul>
+            <a class="btn btn--pink" href="#contact">
+              Book The Royal
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+            </a>
+          </article>
+
+          <article class="package" data-reveal data-delay="2">
+            <div class="package__top">
+              <h3 class="package__name">Add-Ons</h3>
+              <p class="package__tag">Customize your&nbsp;experience</p>
+            </div>
+            <p class="package__price"><span>From</span> $30 <em>per item</em></p>
+            <ul class="package__list">
+              <li>Extra service time — $100/hr (Signature) · $150/hr&nbsp;(Premium)</li>
+              <li>Additional guests — $5/guest, product &amp; supplies&nbsp;included</li>
+              <li>Premium candy topping — $30&nbsp;each</li>
+            </ul>
+            <a class="btn btn--line" href="#contact">Ask us</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============ 5. GALLERY / THE COLLECTION ============ -->
+      <section class="collection" id="gallery">
+        <div class="section-head section-head--split">
+          <div>
+            <span class="eyebrow">Gallery</span>
+            <h2 class="display display--section">Four finishes.<br />One good&nbsp;time.</h2>
+          </div>
+          <p class="section-sub section-sub--right">
+            A glimpse into the bars we've built. Every finish is dressed to match the room — pick
+            one, or let us build something entirely&nbsp;yours.
+          </p>
+        </div>
+
+        <div class="collection__body">
+          <div class="collection__stage">
+            <div class="collection__product" id="collectionProduct">
+              <img
+                src="assets/bar-grass.webp?v=2"
+                alt="The Grass Bar in a living-wall grass finish"
+                width="461"
+                height="663"
+                id="collectionImg"
+              />
+            </div>
+            <span class="collection__note" id="collectionNote">01 — Living wall</span>
+          </div>
+
+          <div class="collection__panel">
+            <div class="collection__tabs" role="tablist" aria-label="Bar finishes">
+              <button class="swatch is-active" role="tab" aria-selected="true" data-bar="grass" data-label="Grass" data-note="01 — Living wall" data-accent="#3F7A46">
+                <span class="swatch__dot" style="--dot: #3F7A46"></span> Grass
+              </button>
+              <button class="swatch" role="tab" aria-selected="false" data-bar="rosegold" data-label="Rosé Gold" data-note="02 — Mosaic shimmer" data-accent="#B76E5C">
+                <span class="swatch__dot" style="--dot: #B76E5C"></span> Rosé Gold
+              </button>
+              <button class="swatch" role="tab" aria-selected="false" data-bar="black" data-label="Black" data-note="03 — Sequin noir" data-accent="#3A3330">
+                <span class="swatch__dot" style="--dot: #3A3330"></span> Black
+              </button>
+              <button class="swatch" role="tab" aria-selected="false" data-bar="silver" data-label="Silver" data-note="04 — Mirror tile" data-accent="#8C8F8C">
+                <span class="swatch__dot" style="--dot: #8C8F8C"></span> Silver
+              </button>
+            </div>
+
+            <div class="collection__copy" id="collectionCopy" aria-live="polite">
+              <h3 class="collection__title" id="collectionTitle">The Grass&nbsp;Bar</h3>
+              <p class="collection__text" id="collectionText">
+                A living-wall face with a soft-touch finish. Our signature look, and the one most
+                guests photograph before they've had a single&nbsp;sip.
+              </p>
+              <ul class="collection__specs">
+                <li><span>Finish</span> Living grass</li>
+                <li><span>Best for</span> Gardens, weddings, daytime</li>
+                <li><span>Lead time</span> 3–6 months</li>
+              </ul>
+              <a class="btn btn--ghost" href="#contact">Check availability</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="marquee" aria-hidden="true">
+          <div class="marquee__track">
+            <span>Bring the fun</span><i>★</i><span>Serve the smile</span><i>★</i>
+            <span>Real juice</span><i>★</i><span>All ages</span><i>★</i>
+            <span>Bring the fun</span><i>★</i><span>Serve the smile</span><i>★</i>
+            <span>Real juice</span><i>★</i><span>All ages</span><i>★</i>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 6. REVIEWS ============ -->
+      <section class="reviews" id="reviews">
+        <div class="reviews__inner">
+          <div class="reviews__head">
+            <span class="eyebrow">Kind words</span>
+            <h2 class="display display--section">Loved by our&nbsp;clients</h2>
+          </div>
+
+          <div class="reviews__card" role="group" tabindex="0" aria-roledescription="carousel" aria-label="Client reviews">
+            <svg class="reviews__mark" viewBox="0 0 68 48" aria-hidden="true">
+              <path d="M0 48V29C0 12.5 8.2 2.4 24.6 0l2.9 8.6C19 10.4 14.3 15 14.3 22h11.4v26H0Zm39.4 0V29C39.4 12.5 47.6 2.4 64 0l2.9 8.6C58.4 10.4 53.7 15 53.7 22h11.4v26H39.4Z" />
+            </svg>
+
+            <div class="reviews__stage">
+              <div class="reviews__slides" id="revSlides">
+                <figure class="review is-active">
+                  <div class="review__stars" role="img" aria-label="Rated five out of five">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                  </div>
+                  <blockquote>
+                    The slush bar was the talk of our wedding. Every guest was mesmerised by the
+                    display, and the flavours were absolutely divine — it felt like a luxury cocktail
+                    bar with a playful&nbsp;twist.
+                  </blockquote>
+                  <figcaption>
+                    <img src="assets/avatar-eleanor.jpg" alt="" width="56" height="56" loading="lazy" />
+                    <span class="review__who">
+                      <strong>Eleanor &amp; James Whitfield</strong>
+                      <span>Wedding · Ottawa</span>
+                    </span>
+                  </figcaption>
+                </figure>
+                <figure class="review">
+                  <div class="review__stars" role="img" aria-label="Rated five out of five">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                  </div>
+                  <blockquote>
+                    We hired Chill &amp; Cheer for our annual product launch and they completely
+                    elevated the event. The branded menu and the professionalism of the team exceeded
+                    every&nbsp;expectation.
+                  </blockquote>
+                  <figcaption>
+                    <img src="assets/avatar-marcus.jpg" alt="" width="56" height="56" loading="lazy" />
+                    <span class="review__who">
+                      <strong>Marcus Delaney</strong>
+                      <span>Brand Director, Cosmetics</span>
+                    </span>
+                  </figcaption>
+                </figure>
+                <figure class="review">
+                  <div class="review__stars" role="img" aria-label="Rated five out of five">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                  </div>
+                  <blockquote>
+                    Our festival needed a bar that could handle hundreds of people without
+                    compromising on quality. The Royal package delivered flawlessly — fast pours,
+                    happy crowds, zero&nbsp;stress.
+                  </blockquote>
+                  <figcaption>
+                    <img src="assets/avatar-priya.jpg" alt="" width="56" height="56" loading="lazy" />
+                    <span class="review__who">
+                      <strong>Priya Nakamura</strong>
+                      <span>Festival Director</span>
+                    </span>
+                  </figcaption>
+                </figure>
+                <figure class="review">
+                  <div class="review__stars" role="img" aria-label="Rated five out of five">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l3 6 6.6.9-4.8 4.7 1.2 6.6L12 17.5 6 20.6l1.2-6.6L2.4 9.3 9 8.4z" /></svg>
+                  </div>
+                  <blockquote>
+                    Hosted a milestone birthday in our garden and the slush bar transformed the whole
+                    evening. Elegant, fun, and the team was an absolute joy to work with. Already
+                    booked&nbsp;again.
+                  </blockquote>
+                  <figcaption>
+                    <img src="assets/avatar-charles.jpg" alt="" width="56" height="56" loading="lazy" />
+                    <span class="review__who">
+                      <strong>Charles &amp; Amelia Hartley</strong>
+                      <span>Private Party</span>
+                    </span>
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+
+          <div class="reviews__nav">
+            <button class="icon-btn" id="revPrev" aria-label="Previous review">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H6M11 6l-6 6 6 6" /></svg>
+            </button>
+            <div class="reviews__dots" id="revDots">
+              <button type="button" data-index="0" aria-current="true" aria-label="Review 1 of 4"></button>
+              <button type="button" data-index="1" aria-label="Review 2 of 4"></button>
+              <button type="button" data-index="2" aria-label="Review 3 of 4"></button>
+              <button type="button" data-index="3" aria-label="Review 4 of 4"></button>
+            </div>
+            <button class="icon-btn" id="revNext" aria-label="Next review">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 7. FAQ ============ -->
+      <section class="faq" id="faq">
+        <div class="faq__grid">
+          <div class="faq__intro">
+            <span class="eyebrow">Questions, answered</span>
+            <h2 class="display display--section">Good to&nbsp;know</h2>
+            <p class="section-sub">Still curious? Send us a note — we answer within 24&nbsp;hours.</p>
+            <a class="btn btn--ghost btn--sm" href="#contact">Ask a question</a>
+          </div>
+
+          <div class="faq__list" id="faqList">
+            <details class="faq__item" open>
+              <summary>
+                <span class="faq__q">How far in advance should I book?</span>
+                <span class="faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__a">
+                <p>
+                  We recommend booking 3–6 months in advance for weddings and peak-season events,
+                  though we do accommodate last-minute requests when our calendar allows. Get in
+                  touch and we'll do our best to make it&nbsp;work.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                <span class="faq__q">Do you offer both alcoholic and non-alcoholic&nbsp;options?</span>
+                <span class="faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__a">
+                <p>
+                  We don't provide alcohol ourselves. If you'd like alcoholic slush, the host would
+                  need to arrange the required liquor permit and supply the alcohol. Once you have
+                  it, we're happy to help mix everything on-site and can suggest the right
+                  proportions so the flavour stays balanced in slush&nbsp;form.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                <span class="faq__q">What areas do you cover?</span>
+                <span class="faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__a">
+                <p>
+                  We serve Eastern Ontario and Western Quebec — including Ottawa, Gatineau,
+                  Cornwall and the surrounding areas. We're also happy to travel — generally within
+                  about a 1-hour drive, and sometimes a bit further for special&nbsp;occasions.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                <span class="faq__q">How long does setup take?</span>
+                <span class="faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__a">
+                <p>
+                  A typical setup takes 60 minutes depending on the package. We arrive well before
+                  your guests and handle everything — delivery, assembly, styling, and cleanup at
+                  the end of the&nbsp;night.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                <span class="faq__q">Can you customize the bar to match our theme or&nbsp;brand?</span>
+                <span class="faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__a">
+                <p>
+                  Yes — this is where we shine. From custom signage and branded wraps to
+                  colour-matched garnishes and themed glassware, we tailor every visual detail to
+                  your event or brand&nbsp;identity.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq__item">
+              <summary>
+                <span class="faq__q">What is included in the pricing?</span>
+                <span class="faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__a">
+                <p>
+                  All of our packages are fully inclusive — delivery, setup, glassware, garnishes,
+                  toppings, and cleanup. No hidden fees. Add-ons like extra service time are
+                  optional and arranged in&nbsp;advance.
+                </p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 8. CONTACT ============ -->
+      <section class="contact" id="contact">
+        <div class="contact__inner">
+          <div class="contact__head">
+            <span class="eyebrow">Get in touch</span>
+            <h2 class="display display--section">Let's plan<br />your&nbsp;pour</h2>
+            <p class="lede">
+              Tell us about your event and we'll design a custom, tailored slush bar experience just
+              for&nbsp;you.
+            </p>
+          </div>
+
+          <div class="contact__grid">
+            <div class="contact__side">
+              <a class="contact-card" href="mailto:chillandcheerstation@gmail.com">
+                <span class="contact-card__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="3" /><path d="m4.5 8 7.5 4.9L19.5 8" /></svg>
+                </span>
+                <span class="contact-card__body">
+                  <span class="contact-card__label">Email</span>
+                  <span class="contact-card__value">chillandcheerstation@gmail.com</span>
+                </span>
+              </a>
+
+              <a class="contact-card" href="tel:+16133667811">
+                <span class="contact-card__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M6.4 3.5h3l1.6 4-2 1.3a12 12 0 0 0 6.2 6.2l1.3-2 4 1.6v3a2.5 2.5 0 0 1-2.8 2.5C10.6 19.1 4.9 13.4 3.9 6.3A2.5 2.5 0 0 1 6.4 3.5Z" /></svg>
+                </span>
+                <span class="contact-card__body">
+                  <span class="contact-card__label">Phone</span>
+                  <span class="contact-card__value">613.366.7811</span>
+                </span>
+              </a>
+
+              <div class="contact-card contact-card--static">
+                <span class="contact-card__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" /><circle cx="12" cy="10" r="2.6" /></svg>
+                </span>
+                <span class="contact-card__body">
+                  <span class="contact-card__label">Based in</span>
+                  <span class="contact-card__value">Eastern Ontario &amp; Western Quebec</span>
+                </span>
+              </div>
+
+              <div class="contact__consult">
+                <p class="contact__consult-title">Prefer to talk it&nbsp;through?</p>
+                <p class="contact__consult-text">
+                  Book a free 15-minute consultation and we'll walk you through every&nbsp;option.
+                </p>
+              </div>
+            </div>
+
+            <form class="booking" id="bookingForm" novalidate>
+              <div class="booking__grid">
+                <label class="field">
+                  <span>Full name <i>*</i></span>
+                  <input type="text" name="name" required placeholder="Jane Doe" />
+                </label>
+                <label class="field">
+                  <span>Email <i>*</i></span>
+                  <input type="email" name="email" required placeholder="jane@email.com" />
+                </label>
+                <label class="field">
+                  <span>Phone</span>
+                  <input type="tel" name="phone" placeholder="07123 456789" />
+                </label>
+                <label class="field">
+                  <span>Event type <i>*</i></span>
+                  <select name="type">
+                    <option>Wedding</option>
+                    <option>Corporate event</option>
+                    <option>Festival</option>
+                    <option>Private party</option>
+                    <option>Something else</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Event date</span>
+                  <input type="date" name="date" />
+                </label>
+                <label class="field">
+                  <span>Time</span>
+                  <input type="text" name="time" placeholder="e.g. 1PM – 3PM" />
+                </label>
+                <label class="field">
+                  <span>Location</span>
+                  <input type="text" name="location" placeholder="Venue or city" />
+                </label>
+                <label class="field">
+                  <span>Guests</span>
+                  <input type="number" name="guests" min="1" placeholder="100" />
+                </label>
+                <label class="field field--wide">
+                  <span>Tell us about your event</span>
+                  <textarea name="message" rows="4" placeholder="Venue, theme, any special requests..."></textarea>
+                </label>
+              </div>
+
+              <button class="btn btn--pink btn--wide" type="submit">
+                Send Enquiry
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+              </button>
+              <p class="booking__note" id="formNote" role="status">
+                We reply within 24 hours. No spam,&nbsp;ever.
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <img src="assets/logo-cream.png" alt="Chill & Cheer" width="694" height="306" loading="lazy" />
+          <p>Bring the fun, serve the smile.<br />A mobile slush bar for the moments you'll keep.</p>
+          <div class="footer__social">
+            <a href="https://instagram.com/chillncheerstation" aria-label="Instagram" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
+            </a>
+            <a href="https://facebook.com/chillncheerstation" aria-label="Facebook" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3a4 4 0 0 0-4 4v2H8v3h2v6h3v-6h3l1-3h-4v-2a1 1 0 0 1 1-1Z" /></svg>
+            </a>
+          </div>
+        </div>
+
+        <nav class="footer__col" aria-label="Explore">
+          <h4>Explore</h4>
+          <a href="#services">Services</a>
+          <a href="#packages">Packages</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+
+        <nav class="footer__col" aria-label="Events">
+          <h4>Events</h4>
+          <a href="#services">Weddings</a>
+          <a href="#services">Corporate</a>
+          <a href="#services">Festivals</a>
+          <a href="#services">Private Parties</a>
+        </nav>
+
+        <div class="footer__col">
+          <h4>Company</h4>
+          <a href="#why-us">Why Us</a>
+          <a href="#contact">Contact</a>
+          <a href="mailto:chillandcheerstation@gmail.com">Email us</a>
+          <a href="tel:+16133667811">613.366.7811</a>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <span>© <span id="year">2026</span> Chill &amp; Cheer Station. All rights reserved.</span>
+        <span class="footer__loc">Eastern Ontario · Western Quebec</span>
+      </div>
+    </footer>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- the bar that travels from the hero into the section below -->
+    <div class="bar-travel" id="barTravel" aria-hidden="true">
+      <img src="assets/bar-grass.webp?v=2" alt="" width="461" height="663" />
+    </div>
+
+    <script src="main.js?v=62"></script>
   </body>
 </html>
