@@ -37,23 +37,36 @@
       return rect.top + scroll + pin.getBoundingClientRect().height - vh;
     }
 
-    // where the section cannot hold itself, the bar's fall and travel run on the
-    // page's own clock, so the only frame worth coming to rest on is the one
-    // where the last finish has landed. stopping at the section's top instead
-    // parks the bar in mid-air over a column that isn't its own.
-    const dock = section.querySelector('.occasion[data-finish="grass"] .occasion__stage img');
-    if (dock && window.matchMedia("(min-width: 1024px)").matches) {
-      const dockTop = dock.getBoundingClientRect().top + scroll;
-      return dockTop - vh * 0.07;
-    }
-
     // otherwise a section starts here: its own top padding is the air under the
     // header, so the content lands the same distance below the header on every
     // screen rather than being centred, which on a tall display leaves a band
     // of the previous section showing above it
     const style = getComputedStyle(section);
     const padTop = parseFloat(style.paddingTop) || 0;
-    return rect.top + scroll + padTop - headerClearance();
+    const start = rect.top + scroll + padTop - headerClearance();
+
+    // packages is the one section taller than a laptop screen. resting at its
+    // top can leave the cards' buttons just under the fold, so when they don't
+    // fit there the heading is allowed to scroll past and the card row becomes
+    // the frame instead — a title above the screen reads better than a title
+    // sliced in half by the header. the cards only stand in one row from 900px
+    // up; stacked, the last card is a whole screen below the first, so the
+    // section keeps its normal start there.
+    if (section.id === "packages" && window.matchMedia("(min-width: 900px)").matches) {
+      const head = section.querySelector(".section-head");
+      const card = section.querySelector(".package");
+      // the button row's own bottom, read off the section's layout so a card
+      // still carrying its reveal offset cannot move the answer
+      const rowBottom = rect.bottom + scroll - (parseFloat(style.paddingBottom) || 0);
+      const buttonRow = card
+        ? rowBottom - (parseFloat(getComputedStyle(card).paddingBottom) || 0)
+        : rowBottom;
+
+      if (buttonRow <= start + vh || !head) return start;
+      return head.getBoundingClientRect().bottom + scroll - (headerClearance() - 22);
+    }
+
+    return start;
   };
 
   // set by the eased-scroll block below, so a nav click travels the same way a
@@ -445,7 +458,13 @@
     height: 0,
   }));
 
-  const animateTravel = Boolean(barTravel && heroBarImg && juiceBarImg);
+  const travelBar = Boolean(barTravel && heroBarImg && juiceBarImg);
+  // the bar is only carried between the hero and section 2 where there is a wide
+  // lane for it: on a phone the flight has to come down the middle of the page,
+  // which puts it straight through the posters' own type, so each section keeps
+  // its own bar there and nothing is ever crossed
+  const travelWide = () => window.matchMedia("(min-width: 1024px)").matches;
+  let animateTravel = false;
 
   let eased = window.scrollY;
   let pointerX = 0;
@@ -456,11 +475,20 @@
   let lastFrame = 0;
   let resizeId = 0;
   let headerScrolled = null;
+  let narrow = window.innerWidth < 1024;
   let geo = null;
   let layoutW = 0;
   let layoutH = 0;
 
   function measure() {
+    narrow = window.innerWidth < 1024;
+    animateTravel = travelBar && travelWide();
+    if (travelBar) {
+      document.documentElement.classList.toggle("has-travel-bar", animateTravel);
+      if (animateTravel) barTravel.style.width = BASE_W + "px";
+    }
+    geo = null;
+
     // whether the section pins has to be read before the frame is un-stuck below
     const pinned = occasionsFrame
       ? getComputedStyle(occasionsFrame).position === "sticky"
@@ -574,6 +602,9 @@
       }
 
       if (dockStage) dockStage.classList.toggle("is-travel-dock", Boolean(geo.occ));
+    } else if (dockStage) {
+      // no travel on this width: the slot keeps its own artwork
+      dockStage.classList.remove("is-travel-dock");
     }
 
     items.forEach((it, i) => {
@@ -644,6 +675,10 @@
 
       let dx = 0;
       let dy = (top + it.height / 2 - vh / 2) * it.speed;
+      // stacked on a phone, the bar and the phrase under it drift in opposite
+      // directions and meet; there is no lane to spend that drift in, so the
+      // poster holds still and keeps its spacing at every scroll position
+      if (narrow && (it.isLine || it.isHero)) dy = 0;
 
       if (it.isLine) {
         dy += smoothY * 5;
@@ -769,11 +804,6 @@
   }
 
   if (!reduceMotion && items.length) {
-    if (animateTravel) {
-      barTravel.style.width = BASE_W + "px";
-      document.documentElement.classList.add("has-travel-bar");
-    }
-
     measure();
 
     window.addEventListener("scroll", requestFrame, { passive: true });
