@@ -74,7 +74,11 @@
   let jumpTo = null;
 
   if (easeScroll) {
-    const EASE = 0.085; // per 60 fps frame: lower = longer glide
+    const EASE = 0.055; // per 60 fps frame: lower = longer glide
+    // one notch of a wheel is a fraction of the travel it asks for: the page
+    // follows a little behind the hand, which is what makes the whole page —
+    // and the bar crossing it — read as slower and heavier
+    const TRAVEL = 0.85;
     const STEP_MS = 1000 / 60;
 
     const IDLE_MS = 130; // a gesture is over once the wheel has been quiet this long
@@ -244,12 +248,13 @@
           gestureStart = current;
         }
 
-        target = Math.min(maxScroll(), Math.max(0, target + delta));
+        target = Math.min(maxScroll(), Math.max(0, target + delta * TRAVEL));
 
-        // a fast flick banks at most a screen of travel, so one hard gesture
-        // never sends the page flying
+        // a fast flick banks less than a screen of travel, so one hard gesture
+        // never sends the page flying. this is what caps the top speed of the
+        // glide, and with it the speed the bar has to travel at
         const lead = target - current;
-        const limit = window.innerHeight * 1.1;
+        const limit = window.innerHeight * 0.72;
         if (lead > limit) target = current + limit;
         else if (lead < -limit) target = current - limit;
 
@@ -370,7 +375,6 @@
      rect and wrote a transform six times per frame, plus the travelling bar). */
   const layers = Array.from(document.querySelectorAll("[data-parallax]"));
   const heroProduct = document.querySelector(".poster__product");
-  const juiceProduct = document.querySelector(".juice__product");
   const heroBarImg = document.querySelector(".poster__product img");
   const juiceBarImg = document.querySelector(".juice__product img");
   const barTravel = document.getElementById("barTravel");
@@ -397,34 +401,30 @@
   });
 
   const BASE_W = 400;
-  const FOLLOW = 0.24; // per 60 fps frame: how quickly the layers chase the scroll
-  const SNAP = 0.35; // px at which they lock back onto the real scroll position
-
   const clamp01 = (t) => Math.min(1, Math.max(0, t));
-  // a quintic in-out: the longest, softest tails of the classic easing curves,
-  // so the bar eases away from rest and settles into the slot without a bump
-  const easeInOut = (t) => t * t * t * (t * (t * 6 - 15) + 10);
-  // the same shape with a lower peak speed: for the width change and anything
-  // else where a steeper curve would read as a lurch rather than a glide
+  // a symmetric ease, still used for the intro dimming where a one-off change
+  // is all that is wanted
   const easeSoft = (t) => t * t * (3 - 2 * t);
 
-  // a trapezoid: a short ramp up, a steady drift, a short ramp down. Its middle
-  // speed is only a little above the page's own, which is what stops the long
-  // fall from reading as a lunge the way a strongly eased curve does.
-  const RAMP = 0.22;
-  function easeDrift(t) {
-    const v = 1 / (1 - RAMP);
-    if (t < RAMP) return (v * t * t) / (2 * RAMP);
-    if (t > 1 - RAMP) {
-      const back = 1 - t;
-      return 1 - (v * back * back) / (2 * RAMP);
-    }
-    return v * (RAMP / 2 + (t - RAMP));
+  /* ---------- the bar's journey ----------
+     The bar is one object crossing three compositions, so its motion is one
+     curve rather than three animations handing over to each other. Each
+     stretch between two rest poses is a cubic through the poses themselves,
+     with the slope left at zero at both ends: it leaves a slot from a
+     standstill, gathers speed, and comes to rest exactly on the next slot. Two
+     stretches that share an end share that zero slope too, so the pair joins
+     without a change of speed — no seam where one leg stops and the next
+     begins, which is what made the journey read as separate stages.
+
+     A settled cubic is also monotone for endpoints that differ, so the bar can
+     never overshoot a slot and slide back into it. */
+  function glideThrough(s, s0, s1, v0, v1) {
+    if (s1 <= s0) return s < s0 ? v0 : v1;
+    const t = clamp01((s - s0) / (s1 - s0));
+    const t2 = t * t;
+    const t3 = t2 * t;
+    return (2 * t3 - 3 * t2 + 1) * v0 + (-2 * t3 + 3 * t2) * v1;
   }
-  // how the pinned stretch is spent, as fractions of it: a beat where the bar
-  // sits on the centre line, then the travel out to the last slot
-  const PIN_BUFFER = 0.14;
-  const PIN_GLIDE = 0.74;
 
   const round = (n) => Math.round(n * 10) / 10;
 
@@ -453,7 +453,6 @@
     speed: parseFloat(el.dataset.parallax) || 0,
     isLine: el.classList.contains("poster__line"),
     isHero: el === heroProduct,
-    isJuice: el === juiceProduct,
     top: 0,
     height: 0,
   }));
@@ -601,6 +600,32 @@
         if (hr.width) geo.ratio = hr.height / hr.width;
       }
 
+      // where the journey comes to rest, taken from the same anchors the nav
+      // uses so the bar and the page can never disagree about where a section
+      // belongs: section 2's slot, then the occasions dock
+      const why = document.getElementById("why-us");
+      const services = document.getElementById("services");
+      geo.sB = why ? Math.max(120, sectionAnchor(why)) : 120;
+      // section 3's anchor is read off the pin rather than the shared anchor
+      // helper: the frame is un-stuck while this runs, so the section still
+      // looks tall and the helper would measure the wrong place
+      let endScroll = geo.sB;
+      if (geo.occ) {
+        endScroll = geo.pin
+          ? geo.pin.top + Math.max(0, geo.pin.height - window.innerHeight)
+          : services
+            ? sectionAnchor(services)
+            : geo.sB;
+      }
+      geo.sC = Math.max(geo.sB, endScroll);
+      // the pose the bar holds from the moment it is docked. while the frame is
+      // pinned the dock stands still on screen, so that rest line is what the
+      // journey aims at; without a pin it is simply the dock's own place in the
+      // section, and the two are the same point either way
+      geo.end = geo.occ
+        ? { x: geo.occ.left, y: geo.pin ? geo.pin.dockY : geo.occ.top - geo.sC, w: geo.occ.width }
+        : { x: geo.to.left, y: geo.to.top - geo.sB, w: geo.to.width };
+
       if (dockStage) dockStage.classList.toggle("is-travel-dock", Boolean(geo.occ));
     } else if (dockStage) {
       // no travel on this width: the slot keeps its own artwork
@@ -632,10 +657,12 @@
     frameId = 0;
 
     // if the viewport changed without a resize event reaching us (a frame that
-    // was sized during load, a restored window), the cached geometry is stale
+    // was sized during load, a restored window, a phone's URL bar sliding away)
+    // the cached geometry is stale — re-derive it, but keep painting this frame
+    // with what we have. returning here left the bar frozen for a beat and then
+    // jumping to the new layout, which is the stutter felt mid-scroll
     if (window.innerWidth !== layoutW || window.innerHeight !== layoutH) {
       scheduleMeasure();
-      return;
     }
 
     const stamp = typeof now === "number" ? now : performance.now();
@@ -646,12 +673,13 @@
     const scroll = window.scrollY;
     const vh = window.innerHeight;
 
-    // the decorations chase the scroll with a long, frame-rate independent
-    // ease: wheel and trackpad steps are interpolated instead of landing on
-    // the page as hard jumps, so the bar drifts rather than snaps
-    const follow = 1 - Math.pow(1 - FOLLOW, step);
-    eased += (scroll - eased) * follow;
-    if (Math.abs(scroll - eased) < SNAP) eased = scroll;
+    // the bar and the decorations sit on the scroll exactly, with no chase of
+    // their own. they used to lag behind on a second filter, and that lag grew
+    // with scrolling speed until the bar was hundreds of pixels off its slot —
+    // then snapped back as the gesture ended, which is what read as a jump. the
+    // page already glides on wheel and trackpad below, and a finger drags a
+    // touch screen natively, so there is nothing left here to smooth
+    eased = scroll;
 
     const pointerEase = 1 - Math.pow(1 - 0.12, step);
     smoothX += (pointerX - smoothX) * pointerEase;
@@ -664,10 +692,6 @@
       headerScrolled = scrolled;
       header.classList.toggle("is-scrolled", scrolled);
     }
-
-    let heroX = 0;
-    let heroY = 0;
-    let juiceY = 0;
 
     for (const it of items) {
       const top = it.top - eased;
@@ -686,10 +710,6 @@
       } else if (it.isHero) {
         dy += smoothY * -9;
         dx = smoothX * -11;
-        heroX = dx;
-        heroY = dy;
-      } else if (it.isJuice) {
-        juiceY = dy;
       }
 
       const next = `translate3d(${dx.toFixed(2)}px, ${dy.toFixed(2)}px, 0)`;
@@ -697,70 +717,45 @@
     }
 
     if (geo) {
-      // 0 while the hero sits at rest, 1 once section 2's slot is half-way up
-      const start = vh * 0.12;
-      const end = Math.max(start + 240, geo.to.top - vh * 0.5);
-      const p = easeInOut(clamp01((eased - start) / (end - start)));
+      // the bar's rest poses, on screen: the hero slot at the top of the page,
+      // section 2's slot when section 2 is where the page comes to rest, and the
+      // occasions dock at the end of section 3's held stretch
+      const sB = geo.sB;
+      const sC = geo.sC;
+      const settledY = geo.to.top - sB;
 
-      const fromTop = geo.from.top - eased + heroY;
-      const fromLeft = geo.from.left + heroX;
-      const toTop = geo.to.top - eased + juiceY;
-      const toLeft = geo.to.left;
+      let x;
+      let y;
+      let width;
 
-      let x = fromLeft + (toLeft - fromLeft) * p;
-      let y = fromTop + (toTop - fromTop) * p;
-      let width = geo.from.width + (geo.to.width - geo.from.width) * p;
+      if (eased >= sC) {
+        // docked. from here the bar is part of the row and leaves the screen with
+        // it, which is also what keeps it locked to its slot on the way out
+        x = geo.end.x;
+        width = geo.end.w;
+        y = sC + geo.end.y - eased;
+      } else if (eased <= sB) {
+        // hero → section 2
+        y = glideThrough(eased, 0, sB, geo.from.top, settledY);
+        x = glideThrough(eased, 0, sB, geo.from.left, geo.to.left);
+        width = glideThrough(eased, 0, sB, geo.from.width, geo.to.width);
+      } else {
+        // section 2 → the occasions dock. the bar recedes to the row's own size
+        // through the first two thirds of the drop and then simply glides into
+        // its slot, so it meets the section's heading as one of the group
+        // rather than as a poster-sized bar crossing the type
+        const recede = sB + (sC - sB) * 0.62;
+        y = glideThrough(eased, sB, sC, settledY, geo.end.y);
+        x = glideThrough(eased, sB, sC, geo.to.left, geo.end.x);
+        width = glideThrough(eased, sB, recede, geo.to.width, geo.end.w);
+      }
 
-      // leg 2: out of section 2 and down into the occasions group. The four
-      // finishes stand together in the middle, so this is a single drop: the bar
-      // comes down its own slot's line and lands in it, shrinking to group size
-      // on the way.
-      if (geo.occ && geo.row) {
-        const dockY = geo.occ.top - eased; // the slot's top, on screen
-        // where the fall comes to rest: the dock's own line while the frame is
-        // held, so the bar meets its slot exactly as the section locks
-        const landY = geo.pin ? geo.pin.dockY : vh * 0.82;
-        const centreX = geo.occ.left;
-
-        // 1 — the fall. One long, slow drop on the slot's own line, shrinking to
-        // group size on the way. It ends at the exact scroll where the slot has
-        // climbed to the landing line, so the bar and its slot meet rather than
-        // one chasing the other.
-        const fallEnd = geo.occ.top - landY;
-        const fallStart = Math.max(end, fallEnd - vh * 0.9);
-        const pinEnd = geo.pin
-          ? geo.pin.top + Math.max(0, geo.pin.height - vh)
-          : Infinity;
-        const targetY = Math.min(dockY, landY);
-        const fallT = easeDrift(clamp01((eased - fallStart) / (fallEnd - fallStart)));
-        x += (centreX - x) * fallT;
-        y += (targetY - y) * fallT;
-        // small early, so the bar is row-sized by the time it reaches the heading
-        width += (geo.occ.width - width) * easeSoft(clamp01(fallT / 0.5));
-
-        // 2 — the settle. The bar is already on its slot's line, so the swipe
-        // out to a far column has nothing left to do: this only holds the bar on
-        // the line while the pinned frame is still held.
-        let gp;
-        if (geo.pin) {
-          const span = Math.max(1, geo.pin.height - vh);
-          const held = clamp01((eased - geo.pin.top) / span);
-          gp = clamp01((held - PIN_BUFFER) / PIN_GLIDE);
-        } else {
-          // no room to pin (short or narrow screens): a shorter, plain travel
-          const glideStart = fallEnd + vh * 0.2;
-          gp = clamp01((eased - glideStart) / (vh * 0.55));
-        }
-        const glideT = easeDrift(gp);
-        x += (geo.occ.left - x) * glideT;
-        if (fallT >= 1) {
-          // while the pin holds, the dock stands still on screen, so the bar is
-          // held on its line. the document coordinate of a sticky dock shifts
-          // by the whole held stretch once it releases, so from there the bar is
-          // measured off that line instead of off the dock's layout position
-          y = geo.pin ? landY - Math.max(0, eased - pinEnd) : targetY;
-        }
-
+      // the hero's bar answers the pointer while it belongs to the hero; that
+      // response retires as the bar leaves, so the journey itself is scroll only
+      const drift = 1 - clamp01(eased / 320);
+      if (drift > 0) {
+        x += smoothX * -11 * drift;
+        y += smoothY * -9 * drift;
       }
 
       // while the bar is crossing the section's intro, the copy steps back so
@@ -787,9 +782,7 @@
     if (geo && geo.row) showFinishes();
 
     const settling =
-      Math.abs(scroll - eased) > SNAP ||
-      Math.abs(pointerX - smoothX) > 0.0008 ||
-      Math.abs(pointerY - smoothY) > 0.0008;
+      Math.abs(pointerX - smoothX) > 0.0008 || Math.abs(pointerY - smoothY) > 0.0008;
 
     if (settling) requestFrame();
     else lastFrame = 0;
