@@ -2010,13 +2010,16 @@ a.contact-card:hover {
     margin-bottom: clamp(30px, 4vw, 48px);
   }
 
+  /* the intro copy stands over the collection panel, so its column is the
+     panel's column: same share of the row and the same gap as the stage/panel
+     pair below, which is what puts the two blocks on one left edge instead of
+     the copy floating in from the right */
   .section-head--split {
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 40px;
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: clamp(30px, 4vw, 64px);
   }
 
   .section-sub--right {
-    justify-self: end;
     text-align: left;
   }
 
