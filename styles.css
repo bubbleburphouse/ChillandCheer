@@ -1467,7 +1467,158 @@ ul {
 
 
 /* ==========================================================================
-   7 — FAQ
+   7 — EVENT COLLECTIVE
+   ========================================================================== */
+.collective {
+  padding: clamp(54px, 6.5vw, 96px) var(--gutter);
+  background: var(--cream);
+}
+
+.collective__inner {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+/* the head already ends on the cards' rule, so it carries no margin of its own */
+.collective .section-head {
+  margin-bottom: 0;
+}
+
+.collective__grid {
+  display: grid;
+  gap: clamp(26px, 3.4vw, 44px);
+  max-width: 1080px;
+  margin: clamp(28px, 4vw, 52px) auto 0;
+  padding-top: clamp(24px, 3vw, 40px);
+  border-top: 1px solid var(--brown-18);
+}
+
+@media (min-width: 760px) {
+  .collective__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.partner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* the photo slot: a tinted plate that holds a partner portrait once there is one */
+.partner__media {
+  --tint: var(--pink-soft);
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: clamp(18px, 2.2vw, 26px);
+  overflow: hidden;
+  background: radial-gradient(125% 105% at 18% 12%, var(--tint), transparent 68%),
+    var(--cream-2);
+  box-shadow: inset 0 0 0 1px var(--brown-10);
+}
+
+.partner__media--photo {
+  --tint: rgba(201, 174, 235, 0.34);
+}
+
+.partner__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.partner__num {
+  position: absolute;
+  top: clamp(12px, 1.6vw, 20px);
+  left: clamp(14px, 1.8vw, 24px);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.6rem, 2.4vw, 2.3rem);
+  line-height: 1;
+  color: rgba(70, 36, 23, 0.22);
+}
+
+.partner__slot {
+  padding: 8px 15px;
+  border-radius: 999px;
+  background: rgba(255, 249, 231, 0.62);
+  box-shadow: inset 0 0 0 1px var(--brown-10);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brown-40);
+}
+
+.partner__title {
+  margin-top: clamp(16px, 1.8vw, 22px);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+  line-height: 1.15;
+}
+
+.partner__name {
+  margin-top: 7px;
+  font-size: 0.86rem;
+  color: var(--brown-60);
+}
+
+.partner__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--pink-deep);
+  transition: color 0.3s var(--ease);
+}
+
+.partner__link svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s var(--ease);
+}
+
+.partner__link:hover {
+  color: var(--brown);
+}
+
+.partner__link:hover svg {
+  transform: translateX(4px);
+}
+
+.partner__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brown-40);
+}
+
+.partner__status::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--lilac);
+}
+
+/* ==========================================================================
+   8 — FAQ
    ========================================================================== */
 .faq {
   padding: clamp(54px, 6.5vw, 96px) var(--gutter);
