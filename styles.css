@@ -873,6 +873,11 @@ ul {
   box-shadow: 0 18px 44px -30px rgba(70, 36, 23, 0.5);
 }
 
+/* the wide shot opens the gallery, since it shows the whole set-up in one frame */
+.photos__item--wide {
+  grid-column: 1 / -1;
+}
+
 .photos__item img {
   display: block;
   width: 100%;
