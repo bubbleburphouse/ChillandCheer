@@ -22,6 +22,7 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="preload" as="image" href="assets/bar-grass.webp?v=2" type="image/webp" fetchpriority="high" />
     <link rel="stylesheet" href="styles.css?v=75" />
   </head>
   <body>
@@ -91,6 +92,11 @@
           </div>
         </div>
       </section>
+
+    <!-- the bar that travels from the hero into the section below -->
+    <div class="bar-travel" id="barTravel" aria-hidden="true">
+      <img src="assets/bar-grass.webp?v=2" alt="" width="461" height="663" fetchpriority="high" decoding="async" />
+    </div>
 
       <!-- ============ 2. WHY US / REAL JUICE ============ -->
       <section class="juice" id="why-us">
@@ -784,11 +790,6 @@
     </footer>
 
     <div class="grain" aria-hidden="true"></div>
-
-    <!-- the bar that travels from the hero into the section below -->
-    <div class="bar-travel" id="barTravel" aria-hidden="true">
-      <img src="assets/bar-grass.webp?v=2" alt="" width="461" height="663" />
-    </div>
 
     <script src="main.js?v=81"></script>
   </body>
