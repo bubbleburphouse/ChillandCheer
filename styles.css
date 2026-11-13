@@ -848,6 +848,72 @@ ul {
 }
 
 /* ==========================================================================
+   3B — FROM THE BAR (PHOTOS)
+   ========================================================================== */
+.photos {
+  padding: clamp(56px, 7vw, 104px) var(--gutter);
+  background: var(--cream);
+}
+
+.photos__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 22px);
+  max-width: 1040px;
+  margin: clamp(32px, 4vw, 56px) auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.photos__item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--cream-2);
+  box-shadow: 0 18px 44px -30px rgba(70, 36, 23, 0.5);
+}
+
+.photos__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.photos__item:hover img {
+  transform: scale(1.025);
+}
+
+/* the caption sits on the photo, so the grid stays clean and the copy travels
+   with the image at every breakpoint */
+.photos__cap {
+  position: absolute;
+  inset: auto 0 0 0;
+  margin: 0;
+  padding: 48px 18px 16px;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(to top, rgba(28, 18, 12, 0.62), rgba(28, 18, 12, 0));
+  pointer-events: none;
+}
+
+@media (max-width: 639px) {
+  .photos__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photos__item img,
+  .photos__item:hover img {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
    4 — PACKAGES
    ========================================================================== */
 .packages {
