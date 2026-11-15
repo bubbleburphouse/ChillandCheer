@@ -2261,6 +2261,14 @@ a.contact-card:hover {
     padding-bottom: 0.18em;
   }
 
+  /* that room sits under the heading's box, and the split copy is bottom
+     aligned to that box, so the copy drops below the heading's last line by
+     the same amount: lift it back so "...entirely yours." shares a baseline
+     with "One good time." */
+  .collection .section-head .section-sub {
+    margin-bottom: calc(0.18 * clamp(2.4rem, 5.4vw, 5rem) - 3.1px);
+  }
+
   /* the intro copy stands over the collection panel, so its column is the
      panel's column: same share of the row and the same gap as the stage/panel
      pair below, which is what puts the two blocks on one left edge instead of
