@@ -2255,6 +2255,12 @@ a.contact-card:hover {
     margin-bottom: clamp(2px, 0.5vw, 6px);
   }
 
+  /* the display face's descenders hang below its 0.94 line box, and the stage
+     behind the product would paint over them: give the heading that room back */
+  .collection .section-head .display {
+    padding-bottom: 0.18em;
+  }
+
   /* the intro copy stands over the collection panel, so its column is the
      panel's column: same share of the row and the same gap as the stage/panel
      pair below, which is what puts the two blocks on one left edge instead of
