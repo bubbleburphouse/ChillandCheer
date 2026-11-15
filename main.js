@@ -530,9 +530,18 @@
     if (animateTravel) {
       const from = heroBarImg.getBoundingClientRect();
       const to = juiceBarImg.getBoundingClientRect();
+      // where the hero begins in the document. when the hero leads the page this
+      // is 0 and the journey is unchanged; when anything sits above it, the
+      // flight has to start when the hero reaches its resting place rather than
+      // at the top of the document
+      const heroSection = document.getElementById("home");
+      const heroStart = heroSection
+        ? Math.max(0, heroSection.getBoundingClientRect().top + scroll)
+        : 0;
       geo = {
         from: { top: from.top + scroll, left: from.left, width: from.width },
         to: { top: to.top + scroll, left: to.left, width: to.width },
+        heroStart,
         occ: null,
         row: null,
         head: null,
@@ -722,6 +731,7 @@
       // occasions dock at the end of section 3's held stretch
       const sB = geo.sB;
       const sC = geo.sC;
+      const startScroll = geo.heroStart || 0;
       const settledY = geo.to.top - sB;
 
       let x;
@@ -734,11 +744,19 @@
         x = geo.end.x;
         width = geo.end.w;
         y = sC + geo.end.y - eased;
+      } else if (eased <= startScroll) {
+        // still above the hero's resting place: the bar simply sits in its slot
+        y = geo.from.top - eased;
+        x = geo.from.left;
+        width = geo.from.width;
       } else if (eased <= sB) {
         // hero → section 2
-        y = glideThrough(eased, 0, sB, geo.from.top, settledY);
-        x = glideThrough(eased, 0, sB, geo.from.left, geo.to.left);
-        width = glideThrough(eased, 0, sB, geo.from.width, geo.to.width);
+        const t = eased - startScroll;
+        const span = Math.max(1, sB - startScroll);
+        const y0 = geo.from.top - startScroll;
+        y = glideThrough(t, 0, span, y0, settledY);
+        x = glideThrough(t, 0, span, geo.from.left, geo.to.left);
+        width = glideThrough(t, 0, span, geo.from.width, geo.to.width);
       } else {
         // section 2 → the occasions dock. the bar recedes to the row's own size
         // through the first two thirds of the drop and then simply glides into

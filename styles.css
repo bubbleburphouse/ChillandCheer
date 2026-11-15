@@ -703,6 +703,12 @@ ul {
 /* ==========================================================================
    3 — OCCASIONS
    ========================================================================== */
+/* the eyebrow labels the heading, so it sits with it rather than a full stack
+   gap above it */
+.occasions .section-head--center {
+  gap: clamp(4px, 0.8vw, 10px);
+}
+
 .occasions {
   padding: clamp(56px, 7vw, 104px) var(--gutter) clamp(48px, 6vw, 88px);
   background: var(--cream-2);
@@ -2212,23 +2218,41 @@ a.contact-card:hover {
 
   .collection__stage {
     border-radius: 6px;
-    min-height: 600px;
+    min-height: clamp(480px, 46vw, 540px);
+    /* the product sits at the top of its stage with the same offset the panel's
+       first row has below the intro, which puts the two on one line */
+    align-items: flex-start;
+    padding-top: clamp(8px, 1vw, 12px);
   }
 
   .collection__product {
     width: min(24vw, 360px);
   }
 
+  /* the product starts at the top of the stage, so the caption follows the
+     product's own bottom edge rather than the foot of the box. 1.4382 is the
+     bar artwork's height/width, which is what the image keeps as it scales */
+  .collection__note {
+    bottom: auto;
+    top: calc(clamp(8px, 1vw, 12px) + min(24vw, 360px) * 1.4382 + 4px);
+  }
+
   .collection__panel {
     border-top: 0;
-    padding: clamp(20px, 2vw, 30px) 0 clamp(30px, 3vw, 44px);
+    /* same offset as the stage's top padding, so the machine and the swatches
+       start on the same line */
+    padding: clamp(8px, 1vw, 12px) 0 clamp(30px, 3vw, 44px);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* the finishes sit straight under the intro copy instead of being held in
+       the middle of a column as tall as the product stage */
+    justify-content: flex-start;
   }
 
   .collection .section-head {
-    margin-bottom: clamp(30px, 4vw, 48px);
+    /* the finishes row sits directly under this intro, so it only needs a
+       breath of separation rather than a full section break */
+    margin-bottom: clamp(2px, 0.5vw, 6px);
   }
 
   /* the intro copy stands over the collection panel, so its column is the
@@ -2488,4 +2512,42 @@ a.contact-card:hover {
   .marquee__track {
     animation: none !important;
   }
+}
+
+/* ==========================================================================
+   GALLERY-LED OPENING
+   the photo row opens the page now, so the hero under it is sized to its own
+   composition rather than to a full viewport, and the sections either side of
+   the opening close up the spacing that used to be section padding
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .hero {
+    min-height: clamp(600px, 66vh, 640px);
+    padding-top: calc(var(--header-h) + 10px);
+    padding-bottom: clamp(10px, 1.2vw, 18px);
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero {
+    min-height: auto;
+    padding-top: clamp(12px, 2vw, 20px);
+  }
+}
+
+/* the "premium mobile bar / eastern ontario" rule closes the photo row and
+   lines up with its tiles */
+.photos__meta {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-top: 18px;
+}
+
+.photos {
+  padding-bottom: clamp(20px, 2.6vw, 34px);
+}
+
+/* the hero, not empty padding, is what the section follows now */
+.juice {
+  padding-top: clamp(14px, 1.8vw, 26px);
 }
