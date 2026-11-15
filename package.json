@@ -4,6 +4,6 @@
   "private": true,
   "description": "Static site for Chill & Cheer mobile slush bar",
   "scripts": {
-    "build": "rm -rf dist && mkdir -p dist && cp index.html styles.css main.js dist/ && cp -R assets dist/"
+    "build": "rm -rf dist && mkdir -p dist && cp index.html styles.css main.js i18n.js dist/ && cp -R assets dist/"
   }
 }

@@ -23,7 +23,7 @@
       rel="stylesheet"
     />
     <link rel="preload" as="image" href="assets/bar-grass.webp?v=2" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="styles.css?v=86" />
+    <link rel="stylesheet" href="styles.css?v=88" />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -49,6 +49,11 @@
         </nav>
 
         <div class="site-header__actions">
+          <div class="lang" role="group" aria-label="Language">
+            <button class="lang__btn is-active" type="button" data-lang="en" aria-pressed="true">EN</button>
+            <button class="lang__btn" type="button" data-lang="fr" aria-pressed="false">FR</button>
+          </div>
+
           <a class="btn btn--pink btn--sm" href="#contact">
             Book Your Bar
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
@@ -356,7 +361,7 @@
         </div>
 
         <div class="collection__body">
-          <div class="collection__stage">
+          <div class="collection__stage" data-i18n-skip>
             <div class="collection__product" id="collectionProduct">
               <img
                 src="assets/bar-grass.webp?v=2"
@@ -385,7 +390,7 @@
               </button>
             </div>
 
-            <div class="collection__copy" id="collectionCopy" aria-live="polite">
+            <div class="collection__copy" id="collectionCopy" aria-live="polite" data-i18n-skip>
               <h3 class="collection__title" id="collectionTitle">The Grass&nbsp;Bar</h3>
               <p class="collection__text" id="collectionText">
                 A living-wall face with a soft-touch finish. Our signature look, and the one most
@@ -793,7 +798,7 @@
                 Send Enquiry
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
               </button>
-              <p class="booking__note" id="formNote" role="status">
+              <p class="booking__note" id="formNote" role="status" data-i18n-skip>
                 We reply within 24 hours. No spam,&nbsp;ever.
               </p>
             </form>
@@ -852,6 +857,7 @@
 
     <div class="grain" aria-hidden="true"></div>
 
-    <script src="main.js?v=82"></script>
+    <script src="i18n.js?v=1"></script>
+    <script src="main.js?v=83"></script>
   </body>
 </html>

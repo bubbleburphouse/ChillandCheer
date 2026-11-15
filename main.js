@@ -868,6 +868,17 @@
       ],
       img: "assets/bar-grass.webp?v=2",
       alt: "The Grass Bar in a living-wall grass finish",
+      fr: {
+        note: "01 — Mur végétal",
+        title: "Le bar Gazon",
+        text: "Un mur végétal au fini velouté. Notre look signature, celui que la plupart des invités photographient avant même la première gorgée.",
+        specs: [
+          ["Fini", "Gazon végétal"],
+          ["Idéal pour", "Jardins, mariages, jour"],
+          ["Délai", "3 à 6 mois"],
+        ],
+        alt: "Le bar Gazon en fini mur végétal",
+      },
     },
     rosegold: {
       label: "Rosé Gold",
@@ -882,6 +893,17 @@
       ],
       img: "assets/bar-rosegold.webp?v=2",
       alt: "The Rosé Gold Bar with a rose-gold mosaic panel",
+      fr: {
+        note: "02 — Mosaïque scintillante",
+        title: "Le bar Or rosé",
+        text: "Une mosaïque or rosé chaleureuse qui joue avec la lumière. Pensé pour les réceptions en soirée et les salles qui brillent déjà.",
+        specs: [
+          ["Fini", "Mosaïque or rosé"],
+          ["Idéal pour", "Réceptions en soirée, galas"],
+          ["Délai", "3 à 6 mois"],
+        ],
+        alt: "Le bar Or rosé avec un panneau de mosaïque or rosé",
+      },
     },
     black: {
       label: "Black",
@@ -896,6 +918,17 @@
       ],
       img: "assets/bar-black.webp?v=2",
       alt: "The Black Bar with a black sequin panel",
+      fr: {
+        note: "03 — Sequins noirs",
+        title: "Le bar Noir",
+        text: "Sequins noirs et finition chrome brossé. Sobre, tranchant et un brin rock and roll — parfait pour les lancements de marque.",
+        specs: [
+          ["Fini", "Sequins noirs"],
+          ["Idéal pour", "Entreprises, lancements, soirées"],
+          ["Délai", "3 à 6 mois"],
+        ],
+        alt: "Le bar Noir avec un panneau de sequins noirs",
+      },
     },
     silver: {
       label: "Silver",
@@ -910,8 +943,24 @@
       ],
       img: "assets/bar-silver.webp?v=2",
       alt: "The Silver Bar with a mirrored silver panel",
+      fr: {
+        note: "04 — Tuiles miroir",
+        title: "Le bar Argent",
+        text: "Des tuiles polies miroir qui captent chaque lumière de la salle. Net et moderne, et photogénique à souhait dans la foule.",
+        specs: [
+          ["Fini", "Argent miroir"],
+          ["Idéal pour", "Festivals, studios, jour"],
+          ["Délai", "3 à 6 mois"],
+        ],
+        alt: "Le bar Argent avec un panneau argent miroir",
+      },
     },
   };
+
+  /* the switcher is bilingual: every bar carries both versions, and a language
+     change repaints whichever one is on screen */
+  const i18n = window.CC_I18N || { lang: "en", t: (value) => value };
+  const copyFor = (bar) => (i18n.lang === "fr" && bar.fr ? bar.fr : bar);
 
   const swatches = Array.from(document.querySelectorAll(".swatch"));
   const collectionProduct = document.getElementById("collectionProduct");
@@ -946,22 +995,34 @@
 
     swapTimer = setTimeout(
       () => {
-        collectionImg.src = bar.img;
-        collectionImg.alt = bar.alt;
-        collectionNote.textContent = bar.note;
-        collectionTitle.textContent = bar.title;
-        collectionText.textContent = bar.text;
-        collectionSpecs.innerHTML = bar.specs
-          .map(([term, value]) => `<li><span>${term}</span>${value}</li>`)
-          .join("");
+        paintBar(bar);
         collectionProduct.classList.remove("is-swapping");
       },
       reduceMotion ? 0 : 220
     );
   }
 
+  // paints the copy and the picture for a bar, in the language on screen
+  function paintBar(bar) {
+    const copy = copyFor(bar);
+    collectionImg.src = bar.img;
+    collectionImg.alt = copy.alt;
+    collectionNote.textContent = copy.note;
+    collectionTitle.textContent = copy.title;
+    collectionText.textContent = copy.text;
+    collectionSpecs.innerHTML = copy.specs
+      .map(([term, value]) => `<li><span>${term}</span>${value}</li>`)
+      .join("");
+  }
+
   swatches.forEach((s) => {
     s.addEventListener("click", () => selectBar(s.dataset.bar));
+  });
+
+  paintBar(bars[currentBar]);
+
+  document.addEventListener("cc:lang", () => {
+    paintBar(bars[currentBar]);
   });
 
   /* ---------- reviews slider ---------- */
@@ -1050,7 +1111,13 @@
   /* ---------- booking form ---------- */
   const form = document.getElementById("bookingForm");
   const formNote = document.getElementById("formNote");
-  const defaultNote = formNote.textContent;
+  const defaultNote = () => i18n.t("We reply within 24 hours. No spam, ever.");
+
+  formNote.textContent = defaultNote();
+
+  document.addEventListener("cc:lang", () => {
+    if (!formNote.classList.contains("is-error")) formNote.textContent = defaultNote();
+  });
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -1065,7 +1132,7 @@
     if (!name || !emailOk) {
       if (!name) form.querySelector('[name="name"]').closest(".field").classList.add("field--error");
       if (!emailOk) form.querySelector('[name="email"]').closest(".field").classList.add("field--error");
-      formNote.textContent = "Please add your name and a valid email\u00a0address.";
+      formNote.textContent = i18n.t("Please add your name and a valid email\u00a0address.");
       formNote.className = "booking__note is-error";
       return;
     }
@@ -1087,14 +1154,15 @@
     const subject = encodeURIComponent(`Slush bar enquiry — ${name}`);
     const body = encodeURIComponent(lines.join("\n"));
 
-    formNote.textContent =
-      "Opening your email app… if nothing happens, write to\u00a0chillandcheerstation@gmail.com.";
+    formNote.textContent = i18n.t(
+      "Opening your email app… if nothing happens, write to\u00a0chillandcheerstation@gmail.com."
+    );
     formNote.className = "booking__note is-success";
 
     window.location.href = `mailto:chillandcheerstation@gmail.com?subject=${subject}&body=${body}`;
 
     setTimeout(() => {
-      formNote.textContent = defaultNote;
+      formNote.textContent = defaultNote();
       formNote.className = "booking__note";
     }, 9000);
   });

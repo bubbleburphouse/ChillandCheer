@@ -373,6 +373,40 @@ ul {
   gap: 12px;
 }
 
+/* language switch: two letters in a pill, the live one set in the bar's brown */
+.lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--brown-18);
+}
+
+.lang__btn {
+  padding: 5px 9px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--brown-60);
+  cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.lang__btn:hover {
+  color: var(--brown);
+}
+
+.lang__btn.is-active {
+  background: var(--brown);
+  color: var(--cream);
+}
+
 .nav-toggle {
   display: none;
   width: 44px;
@@ -2347,6 +2381,12 @@ a.contact-card:hover {
     grid-column: 3;
     justify-self: start;
     text-align: left;
+  }
+
+  /* French runs longer than English in this type: a shade smaller, so each
+     half of the poster still holds its two lines beside the bar */
+  html[lang="fr"] .poster__line {
+    font-size: clamp(2.4rem, 5.3cqw, 5rem);
   }
 
   .poster__line {
