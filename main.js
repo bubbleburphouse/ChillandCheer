@@ -969,6 +969,7 @@
   const collectionTitle = document.getElementById("collectionTitle");
   const collectionText = document.getElementById("collectionText");
   const collectionSpecs = document.querySelector(".collection__specs");
+  const collectionCta = document.querySelector("#collectionCopy .btn");
 
   // Warm the cache so switching feels instant.
   Object.values(bars).forEach((bar) => {
@@ -1013,6 +1014,8 @@
     collectionSpecs.innerHTML = copy.specs
       .map(([term, value]) => `<li><span>${term}</span>${value}</li>`)
       .join("");
+    // the panel is repainted here, so its button asks the dictionary directly
+    if (collectionCta) collectionCta.textContent = i18n.t("Check availability");
   }
 
   swatches.forEach((s) => {
