@@ -1809,6 +1809,11 @@ ul {
   max-width: 62ch;
 }
 
+/* a long answer can run to two paragraphs: keep them part of one thought */
+.faq__a p + p {
+  margin-top: 12px;
+}
+
 @keyframes faqIn {
   from {
     opacity: 0;

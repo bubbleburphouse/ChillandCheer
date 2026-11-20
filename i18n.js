@@ -193,8 +193,10 @@
       "Nous recommandons de réserver de 3 à 6 mois à l'avance pour les mariages et les événements de haute saison, mais nous acceptons les demandes de dernière minute lorsque notre calendrier le permet. Écrivez-nous et nous ferons tout notre possible.",
     "Do you offer both alcoholic and non-alcoholic options?":
       "Offrez-vous des options avec et sans alcool?",
-    "We don't provide alcohol ourselves. If you'd like alcoholic slush, the host would need to arrange the required liquor permit and supply the alcohol. Once you have it, we're happy to help mix everything on-site and can suggest the right proportions so the flavour stays balanced in slush form.":
-      "Nous ne fournissons pas d'alcool. Si vous souhaitez un slush alcoolisé, l'hôte doit obtenir le permis d'alcool requis et fournir l'alcool. Une fois le permis en main, nous vous aidons volontiers à tout mélanger sur place et pouvons suggérer les bonnes proportions pour que les saveurs restent équilibrées en slush.",
+    "Yes! We offer both alcoholic and non-alcoholic options. Alcohol can be added for an additional cost, which includes the required liquor licence and alcohol.":
+      "Oui! Nous offrons des options avec et sans alcool. L'alcool peut être ajouté moyennant un supplément, qui comprend le permis d'alcool requis et l'alcool.",
+    "Alternatively, you're welcome to provide your own liquor licence and alcohol. We're happy to mix drinks on-site or serve the alcohol on the side so guests can choose to add a splash to their drinks. This way, everyone can enjoy the experience, including kids and non-drinkers!":
+      "Vous pouvez aussi fournir votre propre permis d'alcool et votre alcool. Nous mélangeons volontiers les boissons sur place ou servons l'alcool à part, pour que les invités puissent en ajouter un filet à leur verre. Ainsi, tout le monde profite de l'expérience, y compris les enfants et les personnes qui ne boivent pas!",
     "What areas do you cover?": "Quels secteurs couvrez-vous?",
     "We serve Eastern Ontario and Western Quebec — including Ottawa, Gatineau, Cornwall and the surrounding areas. We're also happy to travel — generally within about a 1-hour drive, and sometimes a bit further for special occasions.":
       "Nous desservons l'Est de l'Ontario et l'Ouest du Québec — dont Ottawa, Gatineau, Cornwall et les environs. Nous nous déplaçons aussi avec plaisir — généralement dans un rayon d'environ une heure de route, et parfois un peu plus loin pour les grandes occasions.",
