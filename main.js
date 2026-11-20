@@ -1269,8 +1269,28 @@
       }
     });
 
-    signupForm.addEventListener("submit", (event) => {
+    const signupSubmit = signupForm.querySelector('button[type="submit"]');
+
+    /* the site's Worker files the address with Brevo. Until that is configured
+       (or if the request never lands), the visitor's own mail app is the spare
+       key, so a sign-up is never silently dropped */
+    const signupByEmail = (email) => {
+      const subject = encodeURIComponent("Newsletter sign-up");
+      const body = encodeURIComponent(
+        `Please add ${email} to the Chill & Cheer news and special offers list.`
+      );
+
+      saySignup(i18n.t("Thanks! Your email app is opening — press send to join the list."), "success");
+      rememberSignup("subscribed");
+
+      window.location.href = `mailto:chillandcheerstation@gmail.com?subject=${subject}&body=${body}`;
+
+      window.setTimeout(() => closeSignup("subscribed"), 2400);
+    };
+
+    signupForm.addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (signupSubmit.disabled) return;
 
       const email = signupEmail.value.trim();
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
@@ -1284,17 +1304,45 @@
         return;
       }
 
-      const subject = encodeURIComponent("Newsletter sign-up");
-      const body = encodeURIComponent(
-        `Please add ${email} to the Chill & Cheer news and special offers list.`
+      signupSubmit.disabled = true;
+      saySignup(i18n.t("Adding you to the list…"));
+
+      let result = null;
+      try {
+        const response = await fetch("/api/signup", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ email: email }),
+        });
+        result = await response.json().catch(() => null);
+        if (response.ok && result && result.ok) {
+          saySignup(i18n.t("You're on the list — watch your inbox for a hello."), "success");
+          rememberSignup("subscribed");
+          window.setTimeout(() => closeSignup("subscribed"), 2600);
+          return;
+        }
+      } catch (error) {
+        result = null;
+      } finally {
+        signupSubmit.disabled = false;
+      }
+
+      if (!result || result.error === "unconfigured" || result.error === "network") {
+        signupByEmail(email);
+        return;
+      }
+
+      if (result.error === "email") {
+        signupField.classList.add("field--error");
+        saySignup(i18n.t("Please enter a valid email address."), "error");
+        signupEmail.focus({ preventScroll: true });
+        return;
+      }
+
+      saySignup(
+        i18n.t("Something went wrong — please try again, or write to chillandcheerstation@gmail.com."),
+        "error"
       );
-
-      saySignup(i18n.t("Thanks! Your email app is opening — press send to join the list."), "success");
-      rememberSignup("subscribed");
-
-      window.location.href = `mailto:chillandcheerstation@gmail.com?subject=${subject}&body=${body}`;
-
-      window.setTimeout(() => closeSignup("subscribed"), 2400);
     });
 
     /* first visit only: once it is signed or dismissed, it stays away */

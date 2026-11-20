@@ -2746,6 +2746,12 @@ html.is-signup-open {
   margin-top: 14px;
 }
 
+.signup__form .btn[disabled] {
+  opacity: 0.72;
+  cursor: progress;
+  transform: none;
+}
+
 .signup__note {
   margin: 12px 0 0;
   font-size: 0.7rem;

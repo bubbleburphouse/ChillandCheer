@@ -253,6 +253,11 @@
     "Please enter a valid email address.": "Veuillez entrer une adresse courriel valide.",
     "Thanks! Your email app is opening — press send to join the list.":
       "Merci! Votre application courriel s'ouvre — appuyez sur envoyer pour vous joindre à la liste.",
+    "Adding you to the list…": "Ajout à la liste…",
+    "You're on the list — watch your inbox for a hello.":
+      "Vous êtes sur la liste — surveillez votre boîte de réception.",
+    "Something went wrong — please try again, or write to chillandcheerstation@gmail.com.":
+      "Un problème est survenu — réessayez ou écrivez à chillandcheerstation@gmail.com.",
     "Close": "Fermer",
 
     /* footer */
