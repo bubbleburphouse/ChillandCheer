@@ -240,6 +240,21 @@
     "Opening your email app… if nothing happens, write to chillandcheerstation@gmail.com.":
       "Ouverture de votre application courriel… si rien ne se passe, écrivez à chillandcheerstation@gmail.com.",
 
+    /* newsletter popup */
+    "Join the list": "Rejoignez la liste",
+    "Sign up for news and special offers":
+      "Inscrivez-vous pour recevoir nos nouvelles et nos offres spéciales",
+    "New flavours, seasonal specials and first dibs on dates — straight to your inbox.":
+      "Nouvelles saveurs, offres saisonnières et priorité sur les réservations — directement dans votre boîte de réception.",
+    "Email address": "Adresse courriel",
+    "Sign me up": "Je m'inscris",
+    "No spam, ever. Unsubscribe anytime.":
+      "Aucun pourriel, jamais. Désabonnement en tout temps.",
+    "Please enter a valid email address.": "Veuillez entrer une adresse courriel valide.",
+    "Thanks! Your email app is opening — press send to join the list.":
+      "Merci! Votre application courriel s'ouvre — appuyez sur envoyer pour vous joindre à la liste.",
+    "Close": "Fermer",
+
     /* footer */
     "Bring the fun, serve the smile.": "Apportez le plaisir, servez le sourire.",
     "A mobile slush bar for the moments you'll keep.":

@@ -1170,6 +1170,139 @@
     }, 9000);
   });
 
+  /* ---------- first-visit newsletter popup ---------- */
+  const signup = document.getElementById("signup");
+
+  if (signup) {
+    const SIGNUP_KEY = "cc-signup";
+    const signupForm = document.getElementById("signupForm");
+    const signupNote = document.getElementById("signupNote");
+    const signupEmail = signupForm.querySelector('[name="email"]');
+    const signupField = signupEmail.closest(".field");
+    const signupDefaultNote = () => i18n.t("No spam, ever. Unsubscribe anytime.");
+    let signupOpener = null;
+
+    const seenSignup = () => {
+      try {
+        return localStorage.getItem(SIGNUP_KEY) !== null;
+      } catch (error) {
+        return false;
+      }
+    };
+
+    const rememberSignup = (value) => {
+      try {
+        localStorage.setItem(SIGNUP_KEY, value);
+      } catch (error) {
+        /* private mode — it simply offers again on a later visit */
+      }
+    };
+
+    const saySignup = (message, state) => {
+      signupNote.textContent = message;
+      signupNote.className = state ? `signup__note is-${state}` : "signup__note";
+    };
+
+    const isSignupOpen = () => signup.classList.contains("is-open");
+
+    const openSignup = () => {
+      if (isSignupOpen()) return;
+      signupOpener = document.activeElement;
+      signup.hidden = false;
+
+      /* two frames: the browser has to paint the closed state first, or the
+         card appears without its entrance */
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          signup.classList.add("is-open");
+          document.documentElement.classList.add("is-signup-open");
+          signupEmail.focus({ preventScroll: true });
+        })
+      );
+    };
+
+    const closeSignup = (value) => {
+      if (!isSignupOpen()) return;
+      signup.classList.remove("is-open");
+      document.documentElement.classList.remove("is-signup-open");
+      if (value) rememberSignup(value);
+
+      if (signupOpener && signupOpener.focus) signupOpener.focus({ preventScroll: true });
+
+      window.setTimeout(() => {
+        if (!isSignupOpen()) signup.hidden = true;
+      }, 480);
+    };
+
+    saySignup(signupDefaultNote());
+
+    document.addEventListener("cc:lang", () => saySignup(signupDefaultNote()));
+
+    signup.querySelectorAll("[data-signup-close]").forEach((el) => {
+      el.addEventListener("click", () => closeSignup("dismissed"));
+    });
+
+    signup.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeSignup("dismissed");
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusables = Array.prototype.filter.call(
+        signup.querySelectorAll("button, input, a[href]"),
+        (el) => !el.disabled && el.offsetParent !== null
+      );
+      if (!focusables.length) return;
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    signupForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const email = signupEmail.value.trim();
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+
+      signupField.classList.remove("field--error");
+
+      if (!emailOk) {
+        signupField.classList.add("field--error");
+        saySignup(i18n.t("Please enter a valid email address."), "error");
+        signupEmail.focus({ preventScroll: true });
+        return;
+      }
+
+      const subject = encodeURIComponent("Newsletter sign-up");
+      const body = encodeURIComponent(
+        `Please add ${email} to the Chill & Cheer news and special offers list.`
+      );
+
+      saySignup(i18n.t("Thanks! Your email app is opening — press send to join the list."), "success");
+      rememberSignup("subscribed");
+
+      window.location.href = `mailto:chillandcheerstation@gmail.com?subject=${subject}&body=${body}`;
+
+      window.setTimeout(() => closeSignup("subscribed"), 2400);
+    });
+
+    /* first visit only: once it is signed or dismissed, it stays away */
+    if (!seenSignup()) {
+      window.setTimeout(openSignup, 2500);
+    }
+  }
+
   /* ---------- footer year ---------- */
   document.getElementById("year").textContent = new Date().getFullYear();
 })();

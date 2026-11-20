@@ -23,7 +23,7 @@
       rel="stylesheet"
     />
     <link rel="preload" as="image" href="assets/bar-grass.webp?v=2" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="styles.css?v=89" />
+    <link rel="stylesheet" href="styles.css?v=90" />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -859,9 +859,45 @@
       </div>
     </footer>
 
+    <!-- ============ FIRST-VISIT NEWSLETTER POPUP ============ -->
+    <div class="signup" id="signup" hidden>
+      <div class="signup__backdrop" data-signup-close></div>
+      <div
+        class="signup__card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="signupTitle"
+        aria-describedby="signupSub"
+      >
+        <button class="signup__close" type="button" data-signup-close aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+
+        <p class="signup__eyebrow">Join the list</p>
+        <h2 class="signup__title" id="signupTitle">Sign up for news and special offers</h2>
+        <p class="signup__sub" id="signupSub">
+          New flavours, seasonal specials and first dibs on dates — straight to your inbox.
+        </p>
+
+        <form class="signup__form" id="signupForm" novalidate>
+          <label class="field">
+            <span>Email address</span>
+            <input type="email" name="email" required placeholder="jane@email.com" autocomplete="email" />
+          </label>
+          <button class="btn btn--pink btn--wide" type="submit">
+            Sign me up
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+          </button>
+          <p class="signup__note" id="signupNote" role="status">
+            No spam, ever. Unsubscribe anytime.
+          </p>
+        </form>
+      </div>
+    </div>
+
     <div class="grain" aria-hidden="true"></div>
 
-    <script src="i18n.js?v=2"></script>
-    <script src="main.js?v=84"></script>
+    <script src="i18n.js?v=3"></script>
+    <script src="main.js?v=85"></script>
   </body>
 </html>
