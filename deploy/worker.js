@@ -2,7 +2,9 @@
    Worker entry for the static site.
 
    Everything is served from the built assets except /api/signup, which takes
-   the newsletter form, files the address with Brevo and sends a welcome email.
+   the newsletter form, files the address with Brevo and sends a welcome email
+   in the language the visitor was reading the site in.
+
    The API key lives in the site's secrets (BREVO_API_KEY) and never reaches the
    browser.
 
@@ -19,31 +21,72 @@ const SITE_ORIGINS = [
 ];
 const SITE = "https://chillandcheerstation.com";
 const DEFAULT_SENDER = "hello@chillandcheerstation.com";
-/* hello@ has no mailbox yet, so replies (including unsubscribe requests) go to
-   the inbox that is actually read; BREVO_REPLY_TO overrides it once it exists */
+/* hello@ receives nothing yet (no MX on the domain), so replies — including
+   unsubscribe requests — go to the inbox that is actually read.
+   BREVO_REPLY_TO overrides it once the mailbox answers. */
 const DEFAULT_REPLY_TO = "chillandcheerstation@gmail.com";
 
-const WELCOME_SUBJECT = "Thank you for signing up";
+const WELCOME = {
+  en: {
+    subject: "Thank you for signing up",
+    heading: "Thank you for signing up",
+    p1: "You're on the list: new flavours, seasonal specials and first dibs on dates, straight to your inbox.",
+    p2: "Planning something? Reply to this email, or check availability and we'll bring the slush bar to you.",
+    cta: "Check availability",
+    place: "Eastern Ontario &middot; Western Quebec",
+    placeText: "Eastern Ontario · Western Quebec",
+    why: `You're receiving this because you signed up at ${SITE}.`,
+    out: "Reply with &ldquo;unsubscribe&rdquo; and we'll take you off the list.",
+    outText: 'Reply with "unsubscribe" and we\'ll take you off the list.',
+    intro: "You're on the Chill & Cheer Station list: new flavours, seasonal specials",
+    intro2: "and first dibs on dates, straight to your inbox.",
+    planning: "Planning something? Reply to this email or check availability at",
+    planning2: SITE + ", and we'll bring the slush bar to you across Eastern Ontario",
+    planning3: "and Western Quebec.",
+    sign: "Chill & Cheer Station",
+  },
+  fr: {
+    subject: "Merci de votre inscription",
+    heading: "Merci de votre inscription",
+    p1: "Vous êtes sur la liste : nouvelles saveurs, offres saisonnières et priorité sur les réservations — directement dans votre boîte de réception.",
+    p2: "Vous préparez un événement ? Répondez à ce courriel, ou vérifiez les disponibilités et nous apporterons la bar à slush chez vous.",
+    cta: "Vérifier les disponibilités",
+    place: "Est de l'Ontario &middot; Ouest du Québec",
+    placeText: "Est de l'Ontario · Ouest du Québec",
+    why: `Vous recevez ce courriel parce que vous vous êtes inscrit sur ${SITE}.`,
+    out: "Répondez « désabonnement » et nous vous retirerons de la liste.",
+    outText: "Répondez « désabonnement » et nous vous retirerons de la liste.",
+    intro: "Vous êtes sur la liste de Chill & Cheer Station : nouvelles saveurs,",
+    intro2: "offres saisonnières et priorité sur les réservations.",
+    planning: "Vous préparez un événement ? Répondez à ce courriel ou vérifiez les",
+    planning2: "disponibilités à " + SITE + ", et nous apporterons la bar à slush chez vous",
+    planning3: "dans l'Est de l'Ontario et l'Ouest du Québec.",
+    sign: "Chill & Cheer Station",
+  },
+};
 
-const WELCOME_TEXT = [
-  "Thank you for signing up",
-  "",
-  "You're on the Chill & Cheer Station list: new flavours, seasonal specials",
-  "and first dibs on dates, straight to your inbox.",
-  "",
-  "Planning something? Reply to this email or check availability at",
-  SITE + " — we bring the slush bar to you across Eastern Ontario and",
-  "Western Quebec.",
-  "",
-  "Chill & Cheer Station",
-  "Eastern Ontario · Western Quebec",
-  "",
-  "You're receiving this because you signed up at " + SITE + ".",
-  "Reply with \"unsubscribe\" and we'll take you off the list.",
-].join("\n");
+function welcomeText(copy) {
+  return [
+    copy.heading,
+    "",
+    copy.intro,
+    copy.intro2,
+    "",
+    copy.planning,
+    copy.planning2,
+    copy.planning3,
+    "",
+    copy.sign,
+    copy.placeText,
+    "",
+    copy.why,
+    copy.outText,
+  ].join("\n");
+}
 
-const WELCOME_HTML = `<!doctype html>
-<html lang="en">
+function welcomeHtml(copy, lang) {
+  return `<!doctype html>
+<html lang="${lang}">
   <body style="margin:0;padding:0;background:#fff9e7;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fff9e7;padding:28px 14px;">
       <tr>
@@ -56,25 +99,25 @@ const WELCOME_HTML = `<!doctype html>
             </tr>
             <tr>
               <td style="padding:0 32px;">
-                <h1 style="margin:10px 0 0;font-size:30px;line-height:1.15;font-weight:normal;">Thank you for signing up</h1>
+                <h1 style="margin:10px 0 0;font-size:30px;line-height:1.15;font-weight:normal;">${copy.heading}</h1>
               </td>
             </tr>
             <tr>
               <td style="padding:16px 32px 0;font-size:16px;line-height:1.6;color:#5a3a2b;">
-                <p style="margin:0 0 14px;">You're on the list: new flavours, seasonal specials and first dibs on dates, straight to your inbox.</p>
-                <p style="margin:0 0 22px;">Planning something? Reply to this email, or check availability and we'll bring the slush bar to you.</p>
+                <p style="margin:0 0 14px;">${copy.p1}</p>
+                <p style="margin:0 0 22px;">${copy.p2}</p>
               </td>
             </tr>
             <tr>
               <td style="padding:0 32px 30px;">
-                <a href="${SITE}" style="display:inline-block;background:#f06786;color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;letter-spacing:.04em;text-decoration:none;padding:14px 26px;border-radius:999px;">Check availability</a>
+                <a href="${SITE}" style="display:inline-block;background:#f06786;color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;letter-spacing:.04em;text-decoration:none;padding:14px 26px;border-radius:999px;">${copy.cta}</a>
               </td>
             </tr>
             <tr>
               <td style="padding:18px 32px 30px;border-top:1px solid #f3e6cd;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:#8a6f60;">
-                Eastern Ontario &middot; Western Quebec<br />
-                You're receiving this because you signed up at ${SITE}.<br />
-                Reply with &ldquo;unsubscribe&rdquo; and we'll take you off the list.
+                ${copy.place}<br />
+                ${copy.why}<br />
+                ${copy.out}
               </td>
             </tr>
           </table>
@@ -83,6 +126,7 @@ const WELCOME_HTML = `<!doctype html>
     </table>
   </body>
 </html>`;
+}
 
 function cors(origin, url) {
   if (!origin) return null;
@@ -114,8 +158,9 @@ function json(body, status, headers) {
 
 /* the contact is already saved by the time this runs: a mail problem must never
    turn a successful sign-up into an error on the page */
-async function sendWelcome(env, email) {
+async function sendWelcome(env, email, lang) {
   const sender = env.BREVO_SENDER || DEFAULT_SENDER;
+  const copy = WELCOME[lang] || WELCOME.en;
 
   try {
     const response = await fetch(BREVO_EMAIL, {
@@ -132,25 +177,16 @@ async function sendWelcome(env, email) {
           email: env.BREVO_REPLY_TO || DEFAULT_REPLY_TO,
           name: "Chill & Cheer Station",
         },
-        subject: WELCOME_SUBJECT,
-        htmlContent: WELCOME_HTML,
-        textContent: WELCOME_TEXT,
-        tags: ["website-signup"],
+        subject: copy.subject,
+        htmlContent: welcomeHtml(copy, lang === "fr" ? "fr" : "en"),
+        textContent: welcomeText(copy),
+        tags: ["website-signup", "lang-" + (lang === "fr" ? "fr" : "en")],
       }),
     });
 
-    if (response.ok) return { state: "sent", status: response.status, message: "" };
-
-    let message = "";
-    try {
-      message = (await response.json()).message || "";
-    } catch (error) {
-      /* Brevo answered with something that isn't JSON */
-    }
-
-    return { state: "failed", status: response.status, message: message };
+    return response.ok ? "sent" : "failed";
   } catch (error) {
-    return { state: "failed", status: 0, message: String(error) };
+    return "failed";
   }
 }
 
@@ -181,6 +217,8 @@ async function signup(request, env, url) {
     return json({ ok: false, error: "email" }, 400, headers);
   }
 
+  const lang = String((payload && payload.lang) || "en").slice(0, 2).toLowerCase() === "fr" ? "fr" : "en";
+
   const key = env.BREVO_API_KEY;
   if (!key) return json({ ok: false, error: "unconfigured" }, 503, headers);
 
@@ -207,11 +245,8 @@ async function signup(request, env, url) {
   if (response.ok || response.status === 204) {
     /* 201 means Brevo created the contact; 204 means it already existed, and a
        returning subscriber should not get the welcome again */
-    const mail =
-      response.status === 201
-        ? await sendWelcome(env, email)
-        : { state: "skipped", status: 0, message: "" };
-    return json({ ok: true, welcome: mail.state }, 200, headers);
+    const welcome = response.status === 201 ? await sendWelcome(env, email, lang) : "skipped";
+    return json({ ok: true, welcome: welcome }, 200, headers);
   }
 
   let message = "";

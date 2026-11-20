@@ -1318,7 +1318,7 @@
         const response = await fetch(SIGNUP_API, {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ email: email }),
+          body: JSON.stringify({ email: email, lang: i18n.lang }),
         });
         result = await response.json().catch(() => null);
         if (response.ok && result && result.ok) {
