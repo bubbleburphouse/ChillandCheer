@@ -1271,6 +1271,12 @@
 
     const signupSubmit = signupForm.querySelector('button[type="submit"]');
 
+    /* the custom domain serves the assets only, so a form there has to talk to
+       the site's Worker host; that route allows this page's origin */
+    const SIGNUP_API = /(^|\.)chillandcheerstation\.com$/.test(window.location.hostname)
+      ? "https://site-806e683dd94e4381a422409af0323082.freebuff.page/api/signup"
+      : "/api/signup";
+
     /* the site's Worker files the address with Brevo. Until that is configured
        (or if the request never lands), the visitor's own mail app is the spare
        key, so a sign-up is never silently dropped */
@@ -1309,7 +1315,7 @@
 
       let result = null;
       try {
-        const response = await fetch("/api/signup", {
+        const response = await fetch(SIGNUP_API, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ email: email }),
