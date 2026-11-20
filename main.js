@@ -1333,22 +1333,16 @@
         signupSubmit.disabled = false;
       }
 
-      if (!result || result.error === "unconfigured" || result.error === "network") {
-        signupByEmail(email);
-        return;
-      }
-
-      if (result.error === "email") {
+      if (result && result.error === "email") {
         signupField.classList.add("field--error");
         saySignup(i18n.t("Please enter a valid email address."), "error");
         signupEmail.focus({ preventScroll: true });
         return;
       }
 
-      saySignup(
-        i18n.t("Something went wrong — please try again, or write to chillandcheerstation@gmail.com."),
-        "error"
-      );
+      /* anything else — no key yet, no connection, Brevo refusing the write —
+         still gets the address to the inbox rather than an apology */
+      signupByEmail(email);
     });
 
     /* first visit only: once it is signed or dismissed, it stays away */

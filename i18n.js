@@ -256,8 +256,6 @@
     "Adding you to the list…": "Ajout à la liste…",
     "You're on the list — watch your inbox for a hello.":
       "Vous êtes sur la liste — surveillez votre boîte de réception.",
-    "Something went wrong — please try again, or write to chillandcheerstation@gmail.com.":
-      "Un problème est survenu — réessayez ou écrivez à chillandcheerstation@gmail.com.",
     "Close": "Fermer",
 
     /* footer */
