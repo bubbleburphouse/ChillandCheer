@@ -18,7 +18,10 @@ const SITE_ORIGINS = [
   "https://www.chillandcheerstation.com",
 ];
 const SITE = "https://chillandcheerstation.com";
-const DEFAULT_SENDER = "chillandcheerstation@gmail.com";
+const DEFAULT_SENDER = "hello@chillandcheerstation.com";
+/* hello@ has no mailbox yet, so replies (including unsubscribe requests) go to
+   the inbox that is actually read; BREVO_REPLY_TO overrides it once it exists */
+const DEFAULT_REPLY_TO = "chillandcheerstation@gmail.com";
 
 const WELCOME_SUBJECT = "Thank you for signing up";
 
@@ -125,7 +128,10 @@ async function sendWelcome(env, email) {
       body: JSON.stringify({
         sender: { name: "Chill & Cheer Station", email: sender },
         to: [{ email: email }],
-        replyTo: { email: sender, name: "Chill & Cheer Station" },
+        replyTo: {
+          email: env.BREVO_REPLY_TO || DEFAULT_REPLY_TO,
+          name: "Chill & Cheer Station",
+        },
         subject: WELCOME_SUBJECT,
         htmlContent: WELCOME_HTML,
         textContent: WELCOME_TEXT,
@@ -133,9 +139,18 @@ async function sendWelcome(env, email) {
       }),
     });
 
-    return response.ok ? "sent" : "failed";
+    if (response.ok) return { state: "sent", status: response.status, message: "" };
+
+    let message = "";
+    try {
+      message = (await response.json()).message || "";
+    } catch (error) {
+      /* Brevo answered with something that isn't JSON */
+    }
+
+    return { state: "failed", status: response.status, message: message };
   } catch (error) {
-    return "failed";
+    return { state: "failed", status: 0, message: String(error) };
   }
 }
 
@@ -192,8 +207,11 @@ async function signup(request, env, url) {
   if (response.ok || response.status === 204) {
     /* 201 means Brevo created the contact; 204 means it already existed, and a
        returning subscriber should not get the welcome again */
-    const welcome = response.status === 201 ? await sendWelcome(env, email) : "skipped";
-    return json({ ok: true, welcome: welcome }, 200, headers);
+    const mail =
+      response.status === 201
+        ? await sendWelcome(env, email)
+        : { state: "skipped", status: 0, message: "" };
+    return json({ ok: true, welcome: mail.state }, 200, headers);
   }
 
   let message = "";
