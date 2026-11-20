@@ -255,6 +255,18 @@
       "Merci! Votre application courriel s'ouvre — appuyez sur envoyer pour vous joindre à la liste.",
     "Adding you to the list…": "Ajout à la liste…",
     "Thank you for signing up.": "Merci de votre inscription.",
+    "One moment…": "Un instant…",
+    "We're taking you off the list.": "Nous vous retirons de la liste.",
+    "You're off the list": "Vous êtes désabonné",
+    "We've removed you from the Chill & Cheer newsletter. Sorry to see you go — the sign-up form is always on the site if you change your mind.":
+      "Nous vous avons retiré de l'infolettre Chill & Cheer. Si vous changez d'avis, le formulaire d'inscription reste sur le site.",
+    "That didn't go through": "L'opération n'a pas abouti",
+    "We couldn't remove you just now. Please try again in a moment, or reply to the welcome email and we'll do it by hand.":
+      "Nous n'avons pas pu vous retirer à l'instant. Réessayez dans un moment, ou répondez au courriel de bienvenue et nous nous en occuperons manuellement.",
+    "This link is incomplete": "Ce lien est incomplet",
+    "The unsubscribe link is missing something. Reply to the welcome email and we'll take you off the list by hand.":
+      "Il manque un élément au lien de désabonnement. Répondez au courriel de bienvenue et nous vous retirerons de la liste manuellement.",
+    "Back to the site": "Retour au site",
     "Close": "Fermer",
 
     /* footer */

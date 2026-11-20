@@ -1170,6 +1170,63 @@
     }, 9000);
   });
 
+  /* ---------- unsubscribe link landing ---------- */
+  /* the link in the welcome email points at this site, so the address a reader
+     sees is the site's own; this block does the work and shows the confirmation */
+  const unsubView = document.getElementById("unsub");
+  const unsubParams = new URLSearchParams(window.location.search);
+  const unsubToken = unsubParams.get("unsubscribe");
+
+  if (unsubView && unsubToken) {
+    const unsubTitle = document.getElementById("unsubTitle");
+    const unsubBody = document.getElementById("unsubBody");
+    const unsubRequested = unsubParams.get("l");
+
+    const UNSUB_API = /(^|\.)chillandcheerstation\.com$/.test(window.location.hostname)
+      ? "https://site-806e683dd94e4381a422409af0323082.freebuff.page/api/unsubscribe"
+      : "/api/unsubscribe";
+
+    const sayUnsub = (title, body, state) => {
+      unsubTitle.textContent = title;
+      unsubBody.textContent = body;
+      unsubView.className = `unsub is-${state}`;
+      i18n.apply();
+    };
+
+    if (unsubRequested === "fr") i18n.set("fr", false);
+
+    document.documentElement.classList.add("is-unsub");
+    unsubView.hidden = false;
+    sayUnsub("One moment…", "We're taking you off the list.", "waiting");
+
+    const unsubRemoved = [
+      "You're off the list",
+      "We've removed you from the Chill & Cheer newsletter. Sorry to see you go — the sign-up form is always on the site if you change your mind.",
+    ];
+    const unsubMissing = [
+      "This link is incomplete",
+      "The unsubscribe link is missing something. Reply to the welcome email and we'll take you off the list by hand.",
+    ];
+    const unsubFailed = [
+      "That didn't go through",
+      "We couldn't remove you just now. Please try again in a moment, or reply to the welcome email and we'll do it by hand.",
+    ];
+
+    fetch(`${UNSUB_API}?format=json`, {
+      method: "POST",
+      headers: { "content-type": "application/json", accept: "application/json" },
+      body: JSON.stringify({ t: unsubToken, l: i18n.lang }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result && result.lang === "fr") i18n.set("fr", false);
+        if (result && result.state === "removed") sayUnsub(...unsubRemoved, "removed");
+        else if (result && result.state === "missing") sayUnsub(...unsubMissing, "missing");
+        else sayUnsub(...unsubFailed, "failed");
+      })
+      .catch(() => sayUnsub(...unsubFailed, "failed"));
+  }
+
   /* ---------- first-visit newsletter popup ---------- */
   const signup = document.getElementById("signup");
 
@@ -1346,7 +1403,7 @@
     });
 
     /* first visit only: once it is signed or dismissed, it stays away */
-    if (!seenSignup()) {
+    if (!seenSignup() && !unsubToken) {
       window.setTimeout(openSignup, 2500);
     }
   }

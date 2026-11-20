@@ -2776,3 +2776,51 @@ html.is-signup-open {
     transition: none;
   }
 }
+
+/* ---------- unsubscribe landing (?unsubscribe=token) ---------- */
+.is-unsub {
+  overflow: hidden;
+}
+
+.unsub {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+  background: var(--cream);
+  color: var(--brown);
+  overflow-y: auto;
+}
+
+.unsub[hidden] {
+  display: none;
+}
+
+.unsub__card {
+  width: min(520px, 100%);
+}
+
+.unsub__eyebrow {
+  margin: 0 0 12px;
+  font-family: var(--sans, Arial, Helvetica, sans-serif);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pink-deep);
+}
+
+.unsub__title {
+  margin: 0 0 14px;
+  font-size: clamp(1.625rem, 5vw, 2.125rem);
+  line-height: 1.15;
+  font-weight: 400;
+}
+
+.unsub__body {
+  margin: 0 0 26px;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #5a3a2b;
+}

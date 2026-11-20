@@ -25,7 +25,10 @@ const SITE_ORIGINS = [
 ];
 const SITE = "https://chillandcheerstation.com";
 const WORKER = "https://site-806e683dd94e4381a422409af0323082.freebuff.page";
-const UNSUBSCRIBE_URL = WORKER + "/api/unsubscribe";
+const UNSUBSCRIBE_API = WORKER + "/api/unsubscribe";
+/* the link readers see: the site's own domain and homepage handle the token in
+   the browser, so nothing points at the API host */
+const UNSUBSCRIBE_PAGE = SITE + "/?unsubscribe=";
 const DEFAULT_SENDER = "hello@chillandcheerstation.com";
 /* hello@ is the brand inbox; replies land there and are read */
 const DEFAULT_REPLY_TO = "hello@chillandcheerstation.com";
@@ -289,7 +292,11 @@ async function removeFromList(env, email) {
 async function sendWelcome(env, email, lang) {
   const copy = WELCOME[lang] || WELCOME.en;
   const token = await unsubscribeToken(env, email, lang);
-  const link = token ? UNSUBSCRIBE_URL + "?t=" + token : SITE;
+  const link = token
+    ? UNSUBSCRIBE_PAGE + encodeURIComponent(token) + "&l=" + lang
+    : SITE;
+  /* mail apps call this one directly, so it stays on the API host */
+  const oneClick = token ? UNSUBSCRIBE_API + "?t=" + encodeURIComponent(token) : SITE;
 
   try {
     const response = await fetch(BREVO_EMAIL, {
@@ -311,7 +318,7 @@ async function sendWelcome(env, email, lang) {
         textContent: welcomeText(copy, link),
         headers: token
           ? {
-              "List-Unsubscribe": "<" + link + ">",
+              "List-Unsubscribe": "<" + oneClick + ">",
               "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
             }
           : undefined,
@@ -421,18 +428,64 @@ async function signup(request, env, url) {
 }
 
 async function unsubscribe(request, env, url) {
-  /* GET is the button in the email; POST is Gmail's one-click, which sends
-     "List-Unsubscribe=One-Click" without the reader having to open anything */
-  if (request.method !== "GET" && request.method !== "POST") {
+  const origin = request.headers.get("Origin");
+  const allowed = cors(origin, url);
+
+  if (allowed === false) return json({ ok: false, error: "origin" }, 403, { vary: "Origin" });
+
+  const headers = allowed || {};
+
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers });
+
+  let token = url.searchParams.get("t") || "";
+  let langHint = url.searchParams.get("l") === "fr" ? "fr" : "en";
+  let wantsJson = url.searchParams.get("format") === "json";
+
+  /* three callers: the page on the site's own domain posts JSON, Gmail's
+     one-click posts an empty form to the URL in the header, and anything else
+     opens the link directly */
+  if (request.method === "POST") {
+    if ((request.headers.get("content-type") || "").indexOf("application/json") !== -1) {
+      try {
+        const body = await request.json();
+        if (body && typeof body.t === "string" && body.t) token = body.t;
+        if (body && body.l === "fr") langHint = "fr";
+        wantsJson = true;
+      } catch (error) {
+        /* fall back to whatever the query string carried */
+      }
+    } else {
+      try {
+        await request.text();
+      } catch (error) {
+        /* the body is only "List-Unsubscribe=One-Click"; the token is in the URL */
+      }
+    }
+  } else if (request.method !== "GET") {
     return new Response("Method not allowed", { status: 405, headers: { allow: "GET, POST" } });
   }
 
-  const found = await readUnsubscribeToken(env, url.searchParams.get("t"));
+  const found = await readUnsubscribeToken(env, token);
 
-  if (!found) return page(unsubscribePage("en", "missing"), 400);
-  if (!env.BREVO_API_KEY) return page(unsubscribePage(found.lang, "failed"), 503);
+  if (!found) {
+    if (wantsJson) return json({ ok: false, state: "missing", lang: langHint }, 400, headers);
+    return page(unsubscribePage(langHint, "missing"), 400);
+  }
+
+  if (!env.BREVO_API_KEY) {
+    if (wantsJson) return json({ ok: false, state: "failed", lang: found.lang }, 503, headers);
+    return page(unsubscribePage(found.lang, "failed"), 503);
+  }
 
   const state = await removeFromList(env, found.email);
+
+  if (wantsJson) {
+    return json(
+      { ok: state === "removed", state: state, lang: found.lang },
+      state === "removed" ? 200 : 502,
+      headers
+    );
+  }
 
   if (state === "removed") return page(unsubscribePage(found.lang, "removed"), 200);
   return page(unsubscribePage(found.lang, "failed"), 502);
