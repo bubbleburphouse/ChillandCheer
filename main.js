@@ -1322,7 +1322,7 @@
         });
         result = await response.json().catch(() => null);
         if (response.ok && result && result.ok) {
-          saySignup(i18n.t("You're on the list — watch your inbox for a hello."), "success");
+          saySignup(i18n.t("Thank you for signing up."), "success");
           rememberSignup("subscribed");
           window.setTimeout(() => closeSignup("subscribed"), 2600);
           return;

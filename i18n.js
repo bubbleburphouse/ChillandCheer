@@ -254,8 +254,7 @@
     "Thanks! Your email app is opening — press send to join the list.":
       "Merci! Votre application courriel s'ouvre — appuyez sur envoyer pour vous joindre à la liste.",
     "Adding you to the list…": "Ajout à la liste…",
-    "You're on the list — watch your inbox for a hello.":
-      "Vous êtes sur la liste — surveillez votre boîte de réception.",
+    "Thank you for signing up.": "Merci de votre inscription.",
     "Close": "Fermer",
 
     /* footer */
