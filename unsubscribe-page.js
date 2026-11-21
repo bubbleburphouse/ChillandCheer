@@ -6,15 +6,15 @@
    confirmation. Every word it prints comes from unsubscribe-copy.js, the same
    file the email and the Worker's no-JavaScript page are worded from.
 
-   Loaded as a module after i18n.js and main.js, so the dictionary and the
-   language on screen are already settled by the time this runs.
+   The card covers the page, so the site's own dictionary is not consulted: the
+   token says which language the reader signed up in and this file prints that
+   one, setting the document's language to match.
    ========================================================================== */
 import { unsubCopy } from "./unsubscribe-copy.js?v=1";
 
 const view = document.getElementById("unsub");
 const params = new URLSearchParams(window.location.search);
 const token = params.get("unsubscribe");
-const i18n = window.CC_I18N || { lang: "en", t: (value) => value, set() {} };
 
 if (view && token) {
   const title = document.getElementById("unsubTitle");
@@ -32,13 +32,13 @@ if (view && token) {
     title.textContent = heading;
     body.textContent = message;
     back.textContent = copy.back;
+    document.documentElement.lang = lang;
     view.className = `unsub is-${state}`;
   };
 
   /* the token carries the language the reader signed up in, so a French
      subscriber gets the French confirmation wherever the site happens to be */
   let lang = params.get("l") === "fr" ? "fr" : "en";
-  if (lang === "fr") i18n.set("fr", false);
 
   document.documentElement.classList.add("is-unsub");
   view.hidden = false;
@@ -51,10 +51,7 @@ if (view && token) {
   })
     .then((response) => response.json())
     .then((result) => {
-      if (result && result.lang === "fr" && lang !== "fr") {
-        lang = "fr";
-        i18n.set("fr", false);
-      }
+      if (result && result.lang === "fr") lang = "fr";
       if (result && result.state === "removed") say(lang, "removed");
       else if (result && result.state === "missing") say(lang, "missing");
       else say(lang, "failed");
