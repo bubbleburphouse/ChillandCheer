@@ -1,6 +1,9 @@
 {
   "entrypoint": "index.js",
   "compatibilityDate": "2026-11-08",
-  "modules": [{ "name": "index.js", "type": "esm", "path": "./deploy/worker.js" }],
+  "modules": [
+    { "name": "index.js", "type": "esm", "path": "./deploy/worker.js" },
+    { "name": "unsubscribe-copy.js", "type": "esm", "path": "./unsubscribe-copy.js" }
+  ],
   "assetsDirectory": "./dist"
 }

@@ -16,6 +16,8 @@
    from the browser: both site origins are allowed, and nothing else is.
    ========================================================================== */
 
+import { unsubCopy } from "./unsubscribe-copy.js";
+
 const BREVO_CONTACTS = "https://api.brevo.com/v3/contacts";
 const BREVO_EMAIL = "https://api.brevo.com/v3/smtp/email";
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -43,7 +45,6 @@ const WELCOME = {
     place: "Eastern Ontario &middot; Western Quebec",
     placeText: "Eastern Ontario · Western Quebec",
     why: `You're receiving this because you signed up at ${SITE}.`,
-    unsubscribe: "Unsubscribe",
     intro: "You're on the Chill & Cheer Station list: new flavours, seasonal specials",
     intro2: "and first dibs on dates, straight to your inbox.",
     planning: "Planning something? Reply to this email or check availability at",
@@ -60,7 +61,6 @@ const WELCOME = {
     place: "Est de l'Ontario &middot; Ouest du Québec",
     placeText: "Est de l'Ontario · Ouest du Québec",
     why: `Vous recevez ce courriel parce que vous vous êtes inscrit sur ${SITE}.`,
-    unsubscribe: "Se désabonner",
     intro: "Vous êtes sur la liste de Chill & Cheer Station : nouvelles saveurs,",
     intro2: "offres saisonnières et priorité sur les réservations.",
     planning: "Vous préparez un événement ? Répondez à ce courriel ou vérifiez les",
@@ -70,22 +70,7 @@ const WELCOME = {
   },
 };
 
-const UNSUB_PAGE = {
-  en: {
-    removed: ["You're off the list", "We've removed you from the Chill & Cheer newsletter. If you change your mind, the sign-up form is always on the site."],
-    failed: ["That didn't go through", "We couldn't remove you just now. Reply to the welcome email and we'll take care of it by hand."],
-    missing: ["This link is incomplete", "The unsubscribe link is missing something. Reply to the welcome email and we'll take you off the list by hand."],
-    back: "Back to the site",
-  },
-  fr: {
-    removed: ["Vous êtes désabonné", "Nous vous avons retiré de l'infolettre Chill & Cheer. Si vous changez d'avis, le formulaire d'inscription reste sur le site."],
-    failed: ["L'opération n'a pas abouti", "Nous n'avons pas pu vous retirer à l'instant. Répondez au courriel de bienvenue et nous nous en occuperons manuellement."],
-    missing: ["Ce lien est incomplet", "Il manque un élément au lien de désabonnement. Répondez au courriel de bienvenue et nous vous retirerons de la liste manuellement."],
-    back: "Retour au site",
-  },
-};
-
-function welcomeText(copy, link) {
+function welcomeText(copy, lang, link) {
   return [
     copy.heading,
     "",
@@ -100,7 +85,7 @@ function welcomeText(copy, link) {
     copy.placeText,
     "",
     copy.why,
-    copy.unsubscribe + ": " + link,
+    unsubCopy(lang).button + ": " + link,
   ].join("\n");
 }
 
@@ -138,7 +123,7 @@ function welcomeHtml(copy, lang, link) {
                 ${copy.place}<br />
                 ${copy.why}
                 <div style="padding:12px 0 0;">
-                  <a href="${link}" style="display:inline-block;border:1px solid #f0c9d3;color:#d9496b;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.04em;text-decoration:none;padding:9px 20px;border-radius:999px;">${copy.unsubscribe}</a>
+                  <a href="${link}" style="display:inline-block;border:1px solid #f0c9d3;color:#d9496b;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.04em;text-decoration:none;padding:9px 20px;border-radius:999px;">${unsubCopy(lang).button}</a>
                 </div>
               </td>
             </tr>
@@ -150,8 +135,10 @@ function welcomeHtml(copy, lang, link) {
 </html>`;
 }
 
+/* the plain page for a link opened without JavaScript; its wording is the
+   same set the email button and the site's own confirmation use */
 function unsubscribePage(lang, kind) {
-  const text = UNSUB_PAGE[lang] || UNSUB_PAGE.en;
+  const text = unsubCopy(lang);
   const [heading, body] = text[kind] || text.missing;
 
   return `<!doctype html>
@@ -290,10 +277,11 @@ async function removeFromList(env, email) {
 /* the contact is already saved by the time this runs: a mail problem must never
    turn a successful sign-up into an error on the page */
 async function sendWelcome(env, email, lang) {
-  const copy = WELCOME[lang] || WELCOME.en;
+  const code = lang === "fr" ? "fr" : "en";
+  const copy = WELCOME[code];
   const token = await unsubscribeToken(env, email, lang);
   const link = token
-    ? UNSUBSCRIBE_PAGE + encodeURIComponent(token) + "&l=" + lang
+    ? UNSUBSCRIBE_PAGE + encodeURIComponent(token) + "&l=" + code
     : SITE;
   /* mail apps call this one directly, so it stays on the API host */
   const oneClick = token ? UNSUBSCRIBE_API + "?t=" + encodeURIComponent(token) : SITE;
@@ -314,15 +302,15 @@ async function sendWelcome(env, email, lang) {
           name: "Chill & Cheer Station",
         },
         subject: copy.subject,
-        htmlContent: welcomeHtml(copy, lang === "fr" ? "fr" : "en", link),
-        textContent: welcomeText(copy, link),
+        htmlContent: welcomeHtml(copy, code, link),
+        textContent: welcomeText(copy, code, link),
         headers: token
           ? {
               "List-Unsubscribe": "<" + oneClick + ">",
               "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
             }
           : undefined,
-        tags: ["website-signup", "lang-" + (lang === "fr" ? "fr" : "en")],
+        tags: ["website-signup", "lang-" + code],
       }),
     });
 
