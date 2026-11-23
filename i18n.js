@@ -36,6 +36,7 @@
     "Reception ready": "Prêt pour la réception",
 
     /* hero */
+    "NEW mini crepe rolls bar": "NOUVEAU bar à mini-crêpes roulées",
     "Bring": "Apportez",
     "the fun": "le plaisir",
     "Serve": "Servez",
