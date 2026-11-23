@@ -644,13 +644,12 @@ ul {
   filter: drop-shadow(0 10px 16px rgba(70, 36, 23, 0.16));
 }
 
-/* the pink flag on the crepe bar's top-right corner: a speech bubble whose
-   tail points back down at the rolls */
+/* the pink flag on the crepe bar: a speech bubble whose tail points back at
+   the rolls. On phones it sits over the tray's top-right corner; from 1024px
+   it moves into the cream beside the photo, as if spoken from the product */
 .poster__crepe-tag {
   position: absolute;
   top: -13px;
-  /* sits over the right half of the tray and runs off its right edge, so the
-     tail stays on the rolls and the label reads outwards from the product */
   right: -14%;
   z-index: 2;
   padding: 7px 12px 6px;
@@ -675,6 +674,26 @@ ul {
   height: 0;
   border-left: 7px solid transparent;
   border-top: 7px solid var(--pink);
+}
+
+/* desktop: the label stands clear of the photo, its tail pointing left */
+@media (min-width: 1024px) {
+  .poster__crepe-tag {
+    left: 100%;
+    right: auto;
+    margin-left: 14px;
+  }
+
+  .poster__crepe-tag::after {
+    left: -7px;
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 7px solid var(--pink);
+  }
 }
 
 /* ==========================================================================
