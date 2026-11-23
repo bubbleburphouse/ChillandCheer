@@ -644,9 +644,10 @@ ul {
   filter: drop-shadow(0 10px 16px rgba(70, 36, 23, 0.16));
 }
 
-/* the pink flag on the crepe bar: a speech bubble whose tail points back at
-   the rolls. On phones it sits over the tray's top-right corner; from 1024px
-   it moves into the cream beside the photo, as if spoken from the product */
+/* the pink flag on the crepe bar: a rounded speech bubble with a soft curved
+   tail (no hard arrow) that points back at the rolls. On phones it sits over
+   the tray's top-right corner; from 1024px it moves into the cream beside the
+   photo, as if spoken from the product */
 .poster__crepe-tag {
   position: absolute;
   top: -13px;
@@ -668,12 +669,13 @@ ul {
 .poster__crepe-tag::after {
   content: "";
   position: absolute;
-  left: 23px;
-  bottom: -6px;
-  width: 0;
-  height: 0;
-  border-left: 7px solid transparent;
-  border-top: 7px solid var(--pink);
+  left: 18px;
+  bottom: -14px;
+  width: 28px;
+  height: 18px;
+  background: var(--pink);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 18'%3E%3Cpath d='M28 0C24 7 17 12 5 16C1.5 17 0 14.5 1.5 11.5C5 5 11 1 17 0Z' fill='%23000'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 18'%3E%3Cpath d='M28 0C24 7 17 12 5 16C1.5 17 0 14.5 1.5 11.5C5 5 11 1 17 0Z' fill='%23000'/%3E%3C/svg%3E") no-repeat center / contain;
 }
 
 /* desktop: the label stands clear of the photo, its tail pointing left */
@@ -685,14 +687,12 @@ ul {
   }
 
   .poster__crepe-tag::after {
-    left: -7px;
+    left: auto;
+    right: calc(100% - 4px);
     bottom: auto;
     top: 50%;
-    transform: translateY(-50%);
-    border-left: 0;
-    border-top: 7px solid transparent;
-    border-bottom: 7px solid transparent;
-    border-right: 7px solid var(--pink);
+    margin-top: -9px;
+    transform: scaleX(-1);
   }
 }
 
