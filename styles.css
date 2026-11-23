@@ -627,6 +627,7 @@ ul {
    flow above the bar, right aligned; from 1024px it floats in the open cream
    above "serve the smile", clear of the bar and of the machine */
 .poster__crepe {
+  position: relative;
   /* after the first phrase, before the bar: above it and to its right */
   order: 1;
   align-self: flex-end;
@@ -641,6 +642,37 @@ ul {
   width: 100%;
   height: auto;
   filter: drop-shadow(0 10px 16px rgba(70, 36, 23, 0.16));
+}
+
+/* the pink flag on the crepe bar's top-right corner: a speech bubble whose
+   tail points back down at the rolls */
+.poster__crepe-tag {
+  position: absolute;
+  top: -13px;
+  right: -4px;
+  z-index: 2;
+  padding: 6px 10px 5px;
+  border-radius: 999px;
+  background: var(--pink);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: clamp(0.6rem, 1.9vw, 0.67rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  box-shadow: 0 6px 14px rgba(240, 103, 134, 0.32);
+}
+
+.poster__crepe-tag::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  bottom: -5px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-top: 6px solid var(--pink);
 }
 
 /* ==========================================================================
