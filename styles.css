@@ -667,19 +667,18 @@ ul {
   box-shadow: 0 6px 14px rgba(240, 103, 134, 0.32);
 }
 
-/* the tail: masked rather than a border triangle, so its inner edge can scoop
-   and the tip round off. its top 3px sit behind the pill, which is why the base
-   merges without a seam */
+/* the tail: a plain sharp triangle, wide along the pill's bottom edge and
+   pointed at the lower left, toward the rolls. its top 3px sit behind the pill,
+   so base and bubble read as one piece with no seam */
 .poster__crepe-tag::after {
   content: "";
   position: absolute;
-  left: 9px;
+  left: 11px;
   top: calc(100% - 3px);
-  width: 44px;
-  height: 24px;
+  width: 42px;
+  height: 23px;
   background: var(--pink);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 24'%3E%3Cpath d='M44 0C33 5 23 11 13.6 18.8C11.4 20.6 9.4 21.4 8.2 20.6C6.8 19.6 7 17.6 7.8 15.4C11.2 7 17.4 2.2 24 0.6Z' fill='%23000'/%3E%3C/svg%3E") no-repeat center / contain;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 24'%3E%3Cpath d='M44 0C33 5 23 11 13.6 18.8C11.4 20.6 9.4 21.4 8.2 20.6C6.8 19.6 7 17.6 7.8 15.4C11.2 7 17.4 2.2 24 0.6Z' fill='%23000'/%3E%3C/svg%3E") no-repeat center / contain;
+  clip-path: polygon(21% 0, 100% 0, 0 100%);
 }
 
 /* desktop: the label stands clear of the photo, its tail reaching back toward
@@ -692,7 +691,7 @@ ul {
   }
 
   .poster__crepe-tag::after {
-    left: 6px;
+    left: 8px;
   }
 }
 
