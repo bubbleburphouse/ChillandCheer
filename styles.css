@@ -623,6 +623,26 @@ ul {
   height: auto;
 }
 
+/* the mini crepe roll bar rides with the poster: on phones it stands in the
+   flow above the bar, right aligned; from 1024px it floats in the open cream
+   above "serve the smile", clear of the bar and of the machine */
+.poster__crepe {
+  /* after the first phrase, before the bar: above it and to its right */
+  order: 1;
+  align-self: flex-end;
+  width: clamp(118px, 34vw, 168px);
+  margin: 10px 4% 6px 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.poster__crepe img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 16px rgba(70, 36, 23, 0.16));
+}
+
 /* ==========================================================================
    2 — WHY US / REAL JUICE
    ========================================================================== */
@@ -2436,6 +2456,15 @@ a.contact-card:hover {
     margin: 0;
   }
 
+  .poster__crepe {
+    position: absolute;
+    order: 0;
+    align-self: auto;
+    top: -6px;
+    right: clamp(4px, 3vw, 56px);
+    width: clamp(118px, 11vw, 146px);
+    margin: 0;
+  }
 }
 
 @media (min-width: 1200px) {
