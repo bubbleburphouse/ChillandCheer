@@ -649,7 +649,9 @@ ul {
 .poster__crepe-tag {
   position: absolute;
   top: -13px;
-  right: -4px;
+  /* sits over the right half of the tray and runs off its right edge, so the
+     tail stays on the rolls and the label reads outwards from the product */
+  right: -14%;
   z-index: 2;
   padding: 7px 12px 6px;
   border-radius: 999px;
