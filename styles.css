@@ -675,8 +675,8 @@ ul {
   position: absolute;
   left: 11px;
   top: calc(100% - 3px);
-  width: 42px;
-  height: 23px;
+  width: 21px;
+  height: 12px;
   background: var(--pink);
   clip-path: polygon(21% 0, 100% 0, 0 100%);
 }
